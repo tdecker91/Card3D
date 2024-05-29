@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhevr18sicpgx"]
+
+[ext_resource type="PackedScene" uid="uid://d1uvcisduvvj" path="res://scenes/card_collection_3d.tscn" id="1_psmrh"]
+[ext_resource type="Script" path="res://scripts/hand_3d.gd" id="2_7163y"]
+
+[node name="Hand3D" instance=ExtResource("1_psmrh")]
+script = ExtResource("2_7163y")
+max_drag_y_rotation_deg = 65
+max_drag_x_rotation_deg = 65
+card_swap_tween_duration = 0.12
