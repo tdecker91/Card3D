@@ -6,19 +6,9 @@ var values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 var si = 0
 var vi = 0
 
-@onready var hand: Hand3D = $DragController/Hand3D
-@onready var pile: CardPile3D = $DragController/CardPile3D
+@onready var hand: CardCollection3D = $DragController/Hand
+@onready var pile: CardCollection3D = $DragController/TableCards
 
-
-var dragging_card: Card3D
-var dropping_collection: CardCollection3D
-
-
-func _ready():
-	var layout := LineCardLayout.new()
-	layout.max_width = 20
-	pile.card_layout_strategy = layout
-	hand.card_layout_strategy = FanCardLayout.new()
 
 
 func _input(event):
@@ -31,7 +21,6 @@ func _input(event):
 	elif event.is_action_pressed("ui_right"):
 		if pile.card_layout_strategy is PileCardLayout and hand.card_layout_strategy is LineCardLayout:
 			var layout := LineCardLayout.new()
-			layout.max_width = 18
 			pile.card_layout_strategy = layout
 		elif hand.card_layout_strategy is LineCardLayout:
 			hand.card_layout_strategy = FanCardLayout.new()
@@ -74,12 +63,12 @@ func remove_card():
 
 func play_card(card):
 	var card_index = hand.card_indicies[card]
-	var global_position = hand.cards[card_index].global_position
+	var card_global_position = hand.cards[card_index].global_position
 	var c = hand.remove_card(card_index)
 	
 	pile.add_card(c)
 	c.remove_hovered()
-	c.global_position = global_position
+	c.global_position = card_global_position
 
 
 func clear_cards():
