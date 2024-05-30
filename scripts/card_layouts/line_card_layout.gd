@@ -1,7 +1,7 @@
 class_name LineCardLayout
 extends CardLayout
 
-@export var max_width: float = 14.0:
+var max_width: float = 20:
 	set(w):
 		max_width = w
 		var half_width = max_width / 2.0
@@ -43,11 +43,6 @@ func _get_card_offset(num_cards: int, card_size: float) -> float:
 
 func calculate_card_positions(num_cards: int) -> Array[Vector3]:
 	var positions: Array[Vector3] = []
-	
-	# Calculate required space for cards with padding
-	var total_card_space = card_width * num_cards
-	var total_padding_space = (num_cards - 1) * padding
-	
 	var card_offset = _get_card_offset(num_cards, card_width)
 	var hand_width = card_width + ((num_cards - 1) * card_offset)
 	var start_pos = _get_hand_start_x(hand_width, card_width)

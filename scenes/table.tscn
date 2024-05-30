@@ -1,9 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://usdfp6fqxnev"]
+[gd_scene load_steps=10 format=3 uid="uid://usdfp6fqxnev"]
 
-[ext_resource type="Script" path="res://scripts/hand_controller.gd" id="1_s5vhx"]
+[ext_resource type="Script" path="res://scripts/table.gd" id="1_s5vhx"]
 [ext_resource type="Script" path="res://scripts/drag_controller.gd" id="2_0ynmw"]
-[ext_resource type="PackedScene" uid="uid://dhevr18sicpgx" path="res://scenes/hand_3d.tscn" id="2_upp1e"]
-[ext_resource type="PackedScene" uid="uid://dp2iv50udmvac" path="res://scenes/card_pile_3d.tscn" id="2_xppkv"]
+[ext_resource type="Script" path="res://scripts/card_layouts/line_card_layout.gd" id="4_ht6dn"]
+[ext_resource type="PackedScene" uid="uid://d1uvcisduvvj" path="res://scenes/card_collection_3d.tscn" id="5_stst8"]
+[ext_resource type="Script" path="res://scripts/card_layouts/fan_card_layout.gd" id="6_k87mx"]
+
+[sub_resource type="Resource" id="Resource_yq80r"]
+script = ExtResource("4_ht6dn")
+
+[sub_resource type="Resource" id="Resource_w17iw"]
+script = ExtResource("6_k87mx")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_gv0to"]
 
@@ -20,23 +27,25 @@ light_energy = 2.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8.02745)
 fov = 84.375
 
-[node name="Hand" type="Node3D" parent="."]
+[node name="Table" type="Node3D" parent="."]
 script = ExtResource("1_s5vhx")
 
-[node name="DragController" type="Node3D" parent="Hand" node_paths=PackedStringArray("card_collections")]
+[node name="DragController" type="Node3D" parent="Table"]
 script = ExtResource("2_0ynmw")
-card_collections = [NodePath("CardPile3D"), NodePath("Hand3D")]
 
-[node name="CardPile3D" parent="Hand/DragController" instance=ExtResource("2_xppkv")]
+[node name="TableCards" parent="Table/DragController" instance=ExtResource("5_stst8")]
 reorderable = true
 insertable = true
+card_layout_strategy = SubResource("Resource_yq80r")
 
-[node name="Hand3D" parent="Hand/DragController" instance=ExtResource("2_upp1e")]
+[node name="Hand" parent="Table/DragController" instance=ExtResource("5_stst8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, 0.5)
 reorderable = true
 removable = true
+card_layout_strategy = SubResource("Resource_w17iw")
 
-[node name="Table" type="MeshInstance3D" parent="."]
+[node name="TableSurface" type="MeshInstance3D" parent="Table"]
 transform = Transform3D(12.8364, 0, 0, 0, -4.37114e-08, -6.94784, 0, 1, -3.037e-07, 0, 0, -1)
 mesh = SubResource("PlaneMesh_gv0to")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_glsqp")

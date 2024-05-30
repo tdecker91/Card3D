@@ -1,19 +1,17 @@
 class_name FanCardLayout
 extends CardLayout
 
-@export var arc_angle_deg: float = 90.0:
+var arc_angle_deg: float = 90.0:
 	set(a):
 		arc_angle_deg = a
 		start_angle = PI/2 + (deg_to_rad(arc_angle_deg) / 2)
 		
-@export var arc_radius: float = 7.0
-
+var arc_radius: float = 7.0
 
 var start_angle = PI/2 + (deg_to_rad(arc_angle_deg) / 2)
 
 
 func calculate_card_positions(num_cards: int) -> Array[Vector3]:
-	var start_angle = PI/2 + (deg_to_rad(arc_angle_deg) / 2)
 	var angle_step = deg_to_rad(arc_angle_deg) / (num_cards + 1)
 	var positions: Array[Vector3] = []
 	
@@ -28,7 +26,6 @@ func calculate_card_positions(num_cards: int) -> Array[Vector3]:
 
 
 func calculate_card_position_by_index(num_cards: int, index: int) -> Vector3:
-	var start_angle = PI/2 + (deg_to_rad(arc_angle_deg) / 2)
 	var angle_step = deg_to_rad(arc_angle_deg) / (num_cards + 1)
 	
 	var angle = start_angle - ((index + 1) * angle_step)
@@ -41,7 +38,6 @@ func calculate_card_position_by_index(num_cards: int, index: int) -> Vector3:
 
 func calculate_card_rotations(num_cards: int) -> Array[Vector3]:
 	var rotations: Array[Vector3] = []
-	var start_angle = PI/2 + (deg_to_rad(arc_angle_deg) / 2)
 	var angle_step = deg_to_rad(arc_angle_deg) / (num_cards + 1)
 	
 	for i in range(1, num_cards + 1):

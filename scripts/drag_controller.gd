@@ -8,7 +8,6 @@ signal drag_started(card)
 signal drag_stopped()
 
 
-@export var card_collections: Array[CardCollection3D] = []
 @export var max_drag_y_rotation_deg: int = 65
 @export var max_drag_x_rotation_deg: int = 65
 
@@ -22,18 +21,19 @@ var _dragging_card: Card3D # card that is being dragged
 var _drag_from_collection: CardCollection3D # collection card being dragged from
 var _dragging: bool = false
 var _hovered_collection: CardCollection3D # collection about to drop card into
-var _drag_left_position = null
-var _drag_right_position = null
-
+var _card_collections: Array[CardCollection3D] = []
 
 func _ready():
+	
 	var window = get_window()
 	_camera = window.get_camera_3d()
 	
-	for collection in card_collections:
-		collection.card_selected.connect(_on_collection_card_selected.bind(collection))
-		collection.mouse_enter_drop_zone.connect(_on_collection_mouse_enter_drop_zone.bind(collection))
-		collection.mouse_exit_drop_zone.connect(_on_collection_mouse_exit_drop_zone.bind(collection))
+	for child in get_children():
+		if child is CardCollection3D:
+			_card_collections.append(child)
+			child.card_selected.connect(_on_collection_card_selected.bind(child))
+			child.mouse_enter_drop_zone.connect(_on_collection_mouse_enter_drop_zone.bind(child))
+			child.mouse_exit_drop_zone.connect(_on_collection_mouse_exit_drop_zone.bind(child))
 
 
 func _input(event):
@@ -73,7 +73,7 @@ func _stop_drag(mouse_position: Vector2):
 	_dragging_card = null
 	_drag_from_collection = null
 	
-	for collection in card_collections:
+	for collection in _card_collections:
 		if collection.insertable:
 			collection.disable_drop_zone()
 			
@@ -97,7 +97,7 @@ func return_card_to_collection(mouse_position: Vector2):
 
 func drop_card_to_another_collection(mouse_position: Vector2):
 	var card_index = _drag_from_collection.card_indicies[_dragging_card]
-	var global_position = _drag_from_collection.cards[card_index].global_position
+	var card_global_position = _drag_from_collection.cards[card_index].global_position
 	var c = _drag_from_collection.remove_card(card_index)
 	
 	if _hovered_collection.reorderable:
@@ -107,7 +107,7 @@ func drop_card_to_another_collection(mouse_position: Vector2):
 		_hovered_collection.add_card(c)
 	
 	c.remove_hovered()
-	c.global_position = global_position
+	c.global_position = card_global_position
 
 
 func _drag_card_start(card: Card3D, drag_from_collection: CardCollection3D):
@@ -115,19 +115,20 @@ func _drag_card_start(card: Card3D, drag_from_collection: CardCollection3D):
 	_drag_from_collection = drag_from_collection
 	_dragging_card = card
 	
-	for collection in card_collections:
-		if collection.insertable:
-			collection.enable_drop_zone()
-			
-		if collection.draggable:
-			collection.selection_disabled = true
-	
 	_drag_from_collection.enable_drop_zone()
+	
+	if _drag_from_collection.removable:
+		for collection in _card_collections:
+			if collection.insertable:
+				collection.enable_drop_zone()
+				
+			if collection.draggable:
+				collection.selection_disabled = true
 	
 	drag_started.emit(card)
 
 
-func _handle_drag_event(event: InputEventMouseMotion):
+func _handle_drag_event(_event: InputEventMouseMotion):
 	var m: Vector2 = get_viewport().get_mouse_position()
 	var position3D = card_drag_plane.intersects_ray(_camera.project_ray_origin(m),_camera.project_ray_normal(m))
 	var card_position = _dragging_card.global_position
@@ -160,14 +161,14 @@ func _handle_drag_event(event: InputEventMouseMotion):
 	_dragging_card.global_position.y = position3D.y
 	_dragging_card.global_position.z = position3D.z
 	
-	if _hovered_collection != null and _hovered_collection.reorderable:
+	if _hovered_collection != null and position3D != null and _hovered_collection.reorderable:
 		var drag_screen_point = _get_drag_screen_point(position3D)
 		_hovered_collection.on_drag_hover(_dragging_card, drag_screen_point)
 
 
-func _get_drag_screen_point(position):
-	if position != null:
-		return _camera.unproject_position(position)
+func _get_drag_screen_point(world_position: Vector3):
+	if world_position != null:
+		return _camera.unproject_position(world_position)
 	else:
 		return null
 		

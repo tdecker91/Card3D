@@ -1,5 +1,5 @@
 class_name CardLayout
-extends Node
+extends Resource
 
 
 # moves cards to where they belong in space
@@ -19,11 +19,11 @@ func update_card_position(card: Card3D, num_cards: int, index: int, duration: fl
 	card.dragging_rotation(rotation)
 
 
-func calculate_card_positions(num_cards: int) -> Array[Vector3]:
+func calculate_card_positions(_num_cards: int) -> Array[Vector3]:
 	return []
 
 
-func calculate_card_position_by_index(num_cards: int, index: int) -> Vector3:
+func calculate_card_position_by_index(_num_cards: int, _index: int) -> Vector3:
 	return Vector3.ZERO
 
 
@@ -35,5 +35,5 @@ func calculate_card_rotations(num_cards: int) -> Array[Vector3]:
 	return rotations
 
 
-func calculate_card_rotation_by_index(num_cards: int, index: int) -> Vector3:
+func calculate_card_rotation_by_index(_num_cards: int, _index: int) -> Vector3:
 	return Vector3.ZERO

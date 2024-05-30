@@ -14,18 +14,22 @@ signal mouse_exit_drop_zone()
 signal card_selected(card)
 
 
+@onready var dropzone_collision: CollisionShape3D = $DropZone/CollisionShape3D
+
+
 @export var reorderable: bool = false
 @export var insertable: bool = false
 @export var removable: bool = false
-@export var card_move_tween_duration: float = 0.2
+@export var card_move_tween_duration: float = 0.12
 @export var card_swap_tween_duration: float = 0.12
 @export var card_layout_strategy: CardLayout = LineCardLayout.new():
 	set(strategy):
 		card_layout_strategy = strategy
 		execute_card_strategy()
-
-
-@onready var dropzone_collision: CollisionShape3D = $DropZone/CollisionShape3D
+@export var dropzone_collision_shape: Shape3D = _default_collision_shape(): 
+	set(v):
+		if v != null:
+			$DropZone/CollisionShape3D.shape = v
 
 
 var draggable: bool:
@@ -37,6 +41,7 @@ var card_indicies = {}
 var selection_disabled: bool = false
 
 var _hovered_card: Card3D # card currently hovered
+var _preview_drop_index: int = -1
 
 # add a card to the hand and animate it to the correct position
 # this will add card as child of this node
@@ -106,10 +111,15 @@ func execute_card_strategy():
 
 
 func preview_card_drop(dragging_card: Card3D, index: int):
+	if index == _preview_drop_index:
+		return
+	
+	_preview_drop_index = index
 	var preview_cards: Array[Card3D] = []
 	
 	if card_indicies.has(dragging_card):
 		# dragging card in the current collection
+		index = clamp(index, 0, cards.size() - 1)
 		var current_index = card_indicies[dragging_card]
 		preview_cards += cards.slice(0, current_index)
 		preview_cards += cards.slice(current_index + 1, cards.size())
@@ -124,10 +134,12 @@ func preview_card_drop(dragging_card: Card3D, index: int):
 
 
 func enable_drop_zone():
+	_preview_drop_index = -1
 	dropzone_collision.disabled = false
 
 
 func disable_drop_zone():
+	_preview_drop_index = -1
 	dropzone_collision.disabled = true
 
 
@@ -137,7 +149,7 @@ func on_drag_hover(dragging_card: Card3D, mouse_position: Vector2):
 	preview_card_drop(dragging_card, max(index_to_drop, 0))
 
 
-func get_card_index_at_point(position: Vector2):
+func get_card_index_at_point(mouse_position: Vector2):
 	var camera = get_window().get_camera_3d()
 	var index = cards.size()
 	# iterate cards until finding screen position after mouse position
@@ -146,7 +158,7 @@ func get_card_index_at_point(position: Vector2):
 		var card_index = card_indicies[card]
 		var card_position = card_layout_strategy.calculate_card_position_by_index(cards.size(), card_index)
 		var card_screen_position = camera.unproject_position(card_position)
-		if position.x < card_screen_position.x:
+		if mouse_position.x < card_screen_position.x:
 			index = card_indicies[card]
 			break
 	
@@ -175,3 +187,16 @@ func _on_drop_zone_mouse_entered():
 
 func _on_drop_zone_mouse_exited():
 	mouse_exit_drop_zone.emit()
+	
+
+func _default_collision_shape() -> Shape3D:
+	var shape = ConvexPolygonShape3D.new()
+	shape.points = PackedVector3Array(
+		[
+			Vector3(-7,2,0),
+			Vector3(-7,-2,0),
+			Vector3(7,-2,0),
+			Vector3(7,2,0)
+		]
+	)
+	return shape

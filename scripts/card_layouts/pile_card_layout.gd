@@ -14,7 +14,7 @@ func calculate_card_positions(num_cards: int) -> Array[Vector3]:
 	return positions
 
 
-func calculate_card_position_by_index(num_cards: int, index: int) -> Vector3:
+func calculate_card_position_by_index(_num_cards: int, index: int) -> Vector3:
 	return Vector3(0,0,.01 * index)
 
 
@@ -27,5 +27,5 @@ func calculate_card_rotations(num_cards: int) -> Array[Vector3]:
 	return rotations
 
 
-func calculate_card_rotation_by_index(num_cards: int, index: int) -> Vector3:
+func calculate_card_rotation_by_index(_num_cards: int, _index: int) -> Vector3:
 	return Vector3.ZERO

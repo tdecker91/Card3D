@@ -3,7 +3,7 @@ extends Node3D
 
 
 @export var hover_scale_factor: float = 1.15
-@export var hover_pos_move: Vector3 = Vector3(0, 0.8, 0)
+@export var hover_pos_move: Vector3 = Vector3(0, 0.7, 0)
 @export var move_tween_duration: float = 0.08
 @export var rotate_tween_duration: float = 0.15
 
@@ -59,20 +59,20 @@ func remove_hovered():
 	_tween_mesh_position(Vector3.ZERO, move_tween_duration)
 
 
-func dragging_rotation(rotation):
+func dragging_rotation(drag_rotation):
 	if rotate_tween and rotate_tween.is_running:
 		rotate_tween.kill()
 	
 	rotate_tween = create_tween()
-	_tween_card_rotation(rotation, rotate_tween_duration)
+	_tween_card_rotation(drag_rotation, rotate_tween_duration)
 
 
-func animate_to_position(position: Vector3, duration = move_tween_duration):
+func animate_to_position(new_position: Vector3, duration = move_tween_duration):
 	if position_tween and position_tween.is_running:
 		position_tween.kill()
 	
 	position_tween = create_tween()
-	_tween_card_position(position, duration)
+	_tween_card_position(new_position, duration)
 	return position_tween
 
 
@@ -106,7 +106,7 @@ func _on_static_body_3d_mouse_exited():
 	mouse_exit_card.emit()
 
 
-func _on_static_body_3d_input_event(camera, event, position, normal, shape_idx):
+func _on_static_body_3d_input_event(_camera, event, _position, _normal, _shape_idx):
 	if event is InputEventMouseButton:
 		var button = event.button_index
 		var pressed = event.pressed

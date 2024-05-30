@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/card_collection_3d.gd" id="1_0ckh6"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_bpvrg"]
-points = PackedVector3Array(-3, 3, 0, -3, -3, 0, 3, -3, 0, 3, 3, 0)
+points = PackedVector3Array(-7, 2, 0, -7, -2, 0, 7, -2, 0, 7, 2, 0)
 
 [node name="CardCollection3D" type="Node3D"]
 script = ExtResource("1_0ckh6")

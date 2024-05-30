@@ -1,7 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://dp2iv50udmvac"]
-
-[ext_resource type="PackedScene" uid="uid://d1uvcisduvvj" path="res://scenes/card_collection_3d.tscn" id="1_3sg7u"]
-[ext_resource type="Script" path="res://scripts/card_pile_3d.gd" id="2_dxovb"]
-
-[node name="CardPile3D" instance=ExtResource("1_3sg7u")]
-script = ExtResource("2_dxovb")
