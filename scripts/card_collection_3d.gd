@@ -10,8 +10,10 @@ extends Node3D
 
 signal mouse_enter_drop_zone()
 signal mouse_exit_drop_zone()
+signal card_selected(card)
 
-
+@export var draggable: bool = false # cards can be dragged from this collection
+@export var droppable: bool = false # cards can be dropped into this collection
 @export var card_move_tween_duration: float = 0.2
 @export var card_layout_strategy: CardLayout = LineCardLayout.new():
 	set(strategy):
@@ -24,11 +26,18 @@ signal mouse_exit_drop_zone()
 
 var cards: Array[Card3D] = []
 var card_indicies = {}
+var selection_disabled: bool = false
 
+var _hovered_card: Card3D # card currently hovered
 
 # add a card to the hand and animate it to the correct position
 # this will add card as child of this node
 func add_card(card: Card3D):
+	if draggable:
+		card.card_pressed.connect(_on_card_pressed.bind(card))
+		card.mouse_over_card.connect(_on_card_hover.bind(card))
+		card.mouse_exit_card.connect(_on_card_exit.bind(card))
+		
 	cards.append(card)
 	card_indicies[card] = cards.size() - 1
 	add_child(card)
@@ -48,6 +57,11 @@ func remove_card(index: int) -> Card3D:
 	
 	remove_child(removed_card)
 	execute_card_strategy()
+	
+	if draggable:
+		removed_card.card_pressed.disconnect(_on_card_pressed.bind(removed_card))
+		removed_card.mouse_over_card.disconnect(_on_card_hover.bind(removed_card))
+		removed_card.mouse_exit_card.disconnect(_on_card_exit.bind(removed_card))
 	
 	return removed_card
 
@@ -71,8 +85,25 @@ func execute_card_strategy():
 func enable_drop_zone():
 	dropzone_collision.disabled = false
 
+
 func disable_drop_zone():
 	dropzone_collision.disabled = true
+
+
+func _on_card_hover(card: Card3D):
+	if not selection_disabled:
+		_hovered_card = card
+		card.set_hovered()
+
+
+func _on_card_exit(card: Card3D):
+	if not selection_disabled and _hovered_card == card:
+		card.remove_hovered()
+		_hovered_card = null
+
+
+func _on_card_pressed(card: Card3D):
+	card_selected.emit(card)
 
 
 func _on_drop_zone_mouse_entered():
