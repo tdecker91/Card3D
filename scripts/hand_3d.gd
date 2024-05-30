@@ -12,8 +12,6 @@ signal drag_stopped()
 
 
 @export var camera: Camera3D
-@export var max_drag_y_rotation_deg: int = 65
-@export var max_drag_x_rotation_deg: int = 65
 @export var card_swap_tween_duration: float = .12
 
 
@@ -39,22 +37,22 @@ func _ready():
 	$DropZone/CollisionShape3D.shape = dropzone_shape;
 
 
-func add_card(card: Card3D):
-	card.card_pressed.connect(_on_card_pressed.bind(card))
-	card.mouse_over_card.connect(_on_card_hover.bind(card))
-	card.mouse_exit_card.connect(_on_card_exit.bind(card))
-	super.add_card(card)
-
-
-# remove card from this hand and return it.
-# the caller is responsible for adding card else here
-# and/or calling queue_free on it
-func remove_card(index: int) -> Card3D:
-	var removed_card = super.remove_card(index)
-	removed_card.card_pressed.disconnect(_on_card_pressed.bind(removed_card))
-	removed_card.mouse_over_card.disconnect(_on_card_hover.bind(removed_card))
-	removed_card.mouse_exit_card.disconnect(_on_card_exit.bind(removed_card))
-	return removed_card
+#func add_card(card: Card3D):
+	#card.card_pressed.connect(_on_card_pressed.bind(card))
+	#card.mouse_over_card.connect(_on_card_hover.bind(card))
+	#card.mouse_exit_card.connect(_on_card_exit.bind(card))
+	#super.add_card(card)
+#
+#
+## remove card from this hand and return it.
+## the caller is responsible for adding card else here
+## and/or calling queue_free on it
+#func remove_card(index: int) -> Card3D:
+	#var removed_card = super.remove_card(index)
+	#removed_card.card_pressed.disconnect(_on_card_pressed.bind(removed_card))
+	#removed_card.mouse_over_card.disconnect(_on_card_hover.bind(removed_card))
+	#removed_card.mouse_exit_card.disconnect(_on_card_exit.bind(removed_card))
+	#return removed_card
 
 
 func _input(event):
@@ -63,23 +61,24 @@ func _input(event):
 			_stop_drag()
 	elif event is InputEventMouseMotion:
 		if dragging:
-			_handle_drag_event(event)
+			pass
+			#_handle_drag_event(event)
 
-
-func _on_card_hover(card: Card3D):
-	if not dragging:
-		hovered_card = card
-		card.set_hovered()
-
-
-func _on_card_exit(card: Card3D):
-	if hovered_card == card:
-		card.remove_hovered()
-		hovered_card = null
-
-
-func _on_card_pressed(card: Card3D):
-	_start_drag(card)
+#
+#func _on_card_hover(card: Card3D):
+	#if not dragging:
+		#hovered_card = card
+		#card.set_hovered()
+#
+#
+#func _on_card_exit(card: Card3D):
+	#if hovered_card == card:
+		#card.remove_hovered()
+		#hovered_card = null
+#
+#
+#func _on_card_pressed(card: Card3D):
+	#_start_drag(card)
 
 
 func _start_drag(card: Card3D):
@@ -112,11 +111,11 @@ func _handle_drag_event(event: InputEventMouseMotion):
 	# add rotation to make dragging cards pretty
 	# rotate around y axis for horizontal rotation
 	var y_degrees: float = x_distance * 25
-	y_degrees = clamp(y_degrees, -max_drag_y_rotation_deg, max_drag_y_rotation_deg)
+	#y_degrees = clamp(y_degrees, -max_drag_y_rotation_deg, max_drag_y_rotation_deg)
 	
 	# rotate around x axis for vertial rotation
 	var x_degrees: float = -y_distance * 25
-	x_degrees = clamp(x_degrees, -max_drag_x_rotation_deg, max_drag_x_rotation_deg)
+	#x_degrees = clamp(x_degrees, -max_drag_x_rotation_deg, max_drag_x_rotation_deg)
 	var z_degrees: float = 0
 
 	# put degrees in Vector3
@@ -203,11 +202,3 @@ func _handle_swap_right():
 	
 	_set_drag_boundaries(selected_card)
 	card_layout_strategy.update_card_position(right_card, cards.size(), index, card_swap_tween_duration)
-
-
-func _on_drop_zone_mouse_entered():
-	print("enter drop zone")
-
-
-func _on_drop_zone_mouse_exited():
-	print("exit drop zone")
