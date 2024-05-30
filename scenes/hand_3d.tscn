@@ -5,4 +5,3 @@
 
 [node name="Hand3D" instance=ExtResource("1_psmrh")]
 script = ExtResource("2_7163y")
-card_swap_tween_duration = 0.12

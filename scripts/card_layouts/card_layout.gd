@@ -8,8 +8,9 @@ func update_card_positions(cards: Array[Card3D], duration: float):
 	var rotations = calculate_card_rotations(cards.size())
 	for i in range(cards.size()):
 		var card = cards[i]
-		card.animate_to_position(positions[i], duration)
-		card.dragging_rotation(rotations[i])
+		if card != null:
+			card.animate_to_position(positions[i], duration)
+			card.dragging_rotation(rotations[i])
 
 func update_card_position(card: Card3D, num_cards: int, index: int, duration: float):
 	var position = calculate_card_position_by_index(num_cards, index)
