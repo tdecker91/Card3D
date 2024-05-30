@@ -39,7 +39,8 @@ func _ready():
 func _input(event):
 	if event is InputEventMouseButton:
 		if _dragging and event.button_index == 1 and !event.pressed:
-			_stop_drag()
+			var m: Vector2 = get_viewport().get_mouse_position()
+			_stop_drag(m)
 	elif event is InputEventMouseMotion:
 		if _dragging:
 			_handle_drag_event(event)
@@ -51,52 +52,60 @@ func _on_collection_card_selected(card: Card3D, collection: CardCollection3D):
 
 func _on_collection_mouse_enter_drop_zone(collection: CardCollection3D):
 	_hovered_collection = collection
-	if _dragging_card != null:
-		pass
-		#_set_drag_boundaries(_dragging_card)
 
 
 func _on_collection_mouse_exit_drop_zone(_collection: CardCollection3D):
+	if _hovered_collection != _drag_from_collection:
+		_hovered_collection.execute_card_strategy()
+		
 	_hovered_collection = null
 
 
-func _stop_drag():
+func _stop_drag(mouse_position: Vector2):
 	if _hovered_collection == null or _hovered_collection == _drag_from_collection:
-		return_card_to_collection()
+		return_card_to_collection(mouse_position)
 	elif _hovered_collection != null and _hovered_collection != _drag_from_collection:
-		drop_card_to_another_collection()
+		drop_card_to_another_collection(mouse_position)
 		
-	#_drag_from_collection.execute_card_strategy()
+	_drag_from_collection.disable_drop_zone()
+
 	_dragging = false
 	_dragging_card = null
 	_drag_from_collection = null
 	
 	for collection in card_collections:
-		if collection.droppable:
+		if collection.insertable:
 			collection.disable_drop_zone()
 			
 		if collection.draggable:
 			collection.selection_disabled = false
 	
-	#var card_index = card_indicies[selected_card]
-	#var hand_position = card_layout_strategy.calculate_card_position_by_index(cards.size(), card_index)
-	#card_layout_strategy.update_card_position(selected_card, cards.size(), card_index, card_swap_tween_duration)
-	#selected_card = null
-	#drag_left_position = null
-	#drag_right_position = null
 	drag_stopped.emit()
 
 
-func return_card_to_collection():
+func return_card_to_collection(mouse_position: Vector2):
+	var current_index = _drag_from_collection.card_indicies[_dragging_card]
+	var new_index = _drag_from_collection.get_card_index_at_point(mouse_position)
+	new_index = clamp(new_index, 0, _drag_from_collection.cards.size() - 1)
+	
+	if current_index != new_index:
+		_drag_from_collection.remove_card(current_index)
+		_drag_from_collection.insert_card(_dragging_card, new_index)
+		
 	_drag_from_collection.execute_card_strategy()
 
 
-func drop_card_to_another_collection():
+func drop_card_to_another_collection(mouse_position: Vector2):
 	var card_index = _drag_from_collection.card_indicies[_dragging_card]
 	var global_position = _drag_from_collection.cards[card_index].global_position
 	var c = _drag_from_collection.remove_card(card_index)
 	
-	_hovered_collection.add_card(c)
+	if _hovered_collection.reorderable:
+		var index = _hovered_collection.get_card_index_at_point(mouse_position)
+		_hovered_collection.insert_card(c, index)
+	else:
+		_hovered_collection.add_card(c)
+	
 	c.remove_hovered()
 	c.global_position = global_position
 
@@ -107,32 +116,15 @@ func _drag_card_start(card: Card3D, drag_from_collection: CardCollection3D):
 	_dragging_card = card
 	
 	for collection in card_collections:
-		if collection.droppable:
+		if collection.insertable:
 			collection.enable_drop_zone()
 			
 		if collection.draggable:
 			collection.selection_disabled = true
 	
-	drag_started.emit(card)
-
-
-func _set_drag_boundaries(card):
-	var cards = _hovered_collection.cards
-	var card_layout = _hovered_collection.card_layout_strategy
-	if cards.size() == 1:
-		return
-		
-	var index = _hovered_collection.card_indicies[card]
+	_drag_from_collection.enable_drop_zone()
 	
-	if index > 0:
-		_drag_left_position = card_layout.calculate_card_position_by_index(cards.size(), index - 1)
-	else:
-		_drag_left_position = null
-		
-	if index < cards.size() - 1:
-		_drag_right_position = card_layout.calculate_card_position_by_index(cards.size(), index + 1)
-	else:
-		_drag_right_position = null
+	drag_started.emit(card)
 
 
 func _handle_drag_event(event: InputEventMouseMotion):
@@ -168,25 +160,9 @@ func _handle_drag_event(event: InputEventMouseMotion):
 	_dragging_card.global_position.y = position3D.y
 	_dragging_card.global_position.z = position3D.z
 	
-	if _hovered_collection != null:
-		pass
-		#_handle_card_reorder(position3D)
-
-
-func _handle_card_reorder(drag_position: Vector3):
-	var drag_screen_point = _get_drag_screen_point(drag_position)
-	var swapped = true
-	
-	while swapped:
-		var left_screen_point = _get_drag_screen_point(_drag_left_position)
-		var right_screen_point = _get_drag_screen_point(_drag_right_position)
-		
-		if left_screen_point != null and drag_screen_point.x < left_screen_point.x:
-			_handle_swap_left()
-		elif _drag_right_position != null and drag_screen_point.x > right_screen_point.x:
-			_handle_swap_right()
-		else:
-			swapped = false
+	if _hovered_collection != null and _hovered_collection.reorderable:
+		var drag_screen_point = _get_drag_screen_point(position3D)
+		_hovered_collection.on_drag_hover(_dragging_card, drag_screen_point)
 
 
 func _get_drag_screen_point(position):
@@ -194,31 +170,4 @@ func _get_drag_screen_point(position):
 		return _camera.unproject_position(position)
 	else:
 		return null
-
-
-func _handle_swap_left():
-	var index = _hovered_collection.card_indicies[_dragging_card]
-	var left_index = index - 1
-	var left_card = _hovered_collection.cards[left_index]
-	
-	_hovered_collection.cards[left_index] = _dragging_card
-	_hovered_collection.cards[index] = left_card
-	_hovered_collection.card_indicies[left_card] = index
-	_hovered_collection.card_indicies[_dragging_card] = left_index
-
-	_set_drag_boundaries(_dragging_card)
-	_hovered_collection.card_layout_strategy.update_card_position(left_card, _hovered_collection.cards.size(), index, .12)
-
-
-func _handle_swap_right():
-	var index = _hovered_collection.card_indicies[_dragging_card]
-	var right_index = index + 1
-	var right_card = _hovered_collection.cards[right_index]
-	
-	_hovered_collection.cards[right_index] = _dragging_card
-	_hovered_collection.cards[index] = right_card
-	_hovered_collection.card_indicies[right_card] = index
-	_hovered_collection.card_indicies[_dragging_card] = right_index
-	
-	_set_drag_boundaries(_dragging_card)
-	_hovered_collection.card_layout_strategy.update_card_position(right_card, _hovered_collection.cards.size(), index, .12)
+		

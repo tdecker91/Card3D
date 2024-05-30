@@ -8,13 +8,17 @@
 class_name CardCollection3D
 extends Node3D
 
+
 signal mouse_enter_drop_zone()
 signal mouse_exit_drop_zone()
 signal card_selected(card)
 
-@export var draggable: bool = false # cards can be dragged from this collection
-@export var droppable: bool = false # cards can be dropped into this collection
+
+@export var reorderable: bool = false
+@export var insertable: bool = false
+@export var removable: bool = false
 @export var card_move_tween_duration: float = 0.2
+@export var card_swap_tween_duration: float = 0.12
 @export var card_layout_strategy: CardLayout = LineCardLayout.new():
 	set(strategy):
 		card_layout_strategy = strategy
@@ -23,6 +27,10 @@ signal card_selected(card)
 
 @onready var dropzone_collision: CollisionShape3D = $DropZone/CollisionShape3D
 
+
+var draggable: bool:
+	get:
+		return reorderable or removable
 
 var cards: Array[Card3D] = []
 var card_indicies = {}
@@ -41,6 +49,21 @@ func add_card(card: Card3D):
 	cards.append(card)
 	card_indicies[card] = cards.size() - 1
 	add_child(card)
+	execute_card_strategy()
+
+
+func insert_card(card: Card3D, index: int):
+	if draggable:
+		card.card_pressed.connect(_on_card_pressed.bind(card))
+		card.mouse_over_card.connect(_on_card_hover.bind(card))
+		card.mouse_exit_card.connect(_on_card_exit.bind(card))
+		
+	cards.insert(index, card)
+	add_child(card)
+	
+	for i in range(index, cards.size()):
+		card_indicies[cards[i]] = i
+		
 	execute_card_strategy()
 
 
@@ -82,12 +105,52 @@ func execute_card_strategy():
 	card_layout_strategy.update_card_positions(cards, card_move_tween_duration)
 
 
+func preview_card_drop(dragging_card: Card3D, index: int):
+	var preview_cards: Array[Card3D] = []
+	
+	if card_indicies.has(dragging_card):
+		# dragging card in the current collection
+		var current_index = card_indicies[dragging_card]
+		preview_cards += cards.slice(0, current_index)
+		preview_cards += cards.slice(current_index + 1, cards.size())
+		preview_cards.insert(index, null)
+	else:
+		# dragging new card in from another collection
+		preview_cards += cards.slice(0, index)
+		preview_cards.append(null)
+		preview_cards += cards.slice(index, cards.size())
+	
+	card_layout_strategy.update_card_positions(preview_cards, card_swap_tween_duration)
+
+
 func enable_drop_zone():
 	dropzone_collision.disabled = false
 
 
 func disable_drop_zone():
 	dropzone_collision.disabled = true
+
+
+func on_drag_hover(dragging_card: Card3D, mouse_position: Vector2):
+	var index_to_drop = get_card_index_at_point(mouse_position)
+	
+	preview_card_drop(dragging_card, max(index_to_drop, 0))
+
+
+func get_card_index_at_point(position: Vector2):
+	var camera = get_window().get_camera_3d()
+	var index = cards.size()
+	# iterate cards until finding screen position after mouse position
+	#   this is the index where we will add card
+	for card in cards:
+		var card_index = card_indicies[card]
+		var card_position = card_layout_strategy.calculate_card_position_by_index(cards.size(), card_index)
+		var card_screen_position = camera.unproject_position(card_position)
+		if position.x < card_screen_position.x:
+			index = card_indicies[card]
+			break
+	
+	return index
 
 
 func _on_card_hover(card: Card3D):
