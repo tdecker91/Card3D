@@ -7,8 +7,8 @@ var si = 0
 var vi = 0
 
 @onready var camera = $"../Camera3D"
-@onready var hand: Hand3D = $"Hand3D"
-@onready var pile: CardPile3D = $CardPile3D
+@onready var hand: Hand3D = $DragController/Hand3D
+@onready var pile: CardPile3D = $DragController/CardPile3D
 
 var dragging_card: Card3D
 var dropping_collection: CardCollection3D
@@ -97,12 +97,10 @@ func play_card(card):
 	c.global_position = global_position
 
 func mouse_enter_pile_drop_zone():
-	print("hand controller mouse enter drop zone")
 	dropping_collection = pile
 
 
 func mouse_exit_pile_drop_zone():
-	print("hand controller mouse exit drop zone")
 	dropping_collection = null
 
 
@@ -115,7 +113,7 @@ func _on_hand_3d_drag_started(card):
 func _on_hand_3d_drag_stopped():
 	pile.disable_drop_zone()
 	
-	if dropping_collection != null:
-		play_card(dragging_card)
+	#if dropping_collection != null:
+		#play_card(dragging_card)
 		
 	dragging_card = null

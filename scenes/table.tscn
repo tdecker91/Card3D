@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://usdfp6fqxnev"]
+[gd_scene load_steps=7 format=3 uid="uid://usdfp6fqxnev"]
 
 [ext_resource type="Script" path="res://scripts/hand_controller.gd" id="1_s5vhx"]
+[ext_resource type="Script" path="res://scripts/drag_controller.gd" id="2_0ynmw"]
 [ext_resource type="PackedScene" uid="uid://dhevr18sicpgx" path="res://scenes/hand_3d.tscn" id="2_upp1e"]
 [ext_resource type="PackedScene" uid="uid://dp2iv50udmvac" path="res://scenes/card_pile_3d.tscn" id="2_xppkv"]
 
@@ -22,15 +23,22 @@ fov = 84.375
 [node name="Hand" type="Node3D" parent="."]
 script = ExtResource("1_s5vhx")
 
-[node name="CardPile3D" parent="Hand" instance=ExtResource("2_xppkv")]
+[node name="DragController" type="Node3D" parent="Hand" node_paths=PackedStringArray("card_collections")]
+script = ExtResource("2_0ynmw")
+card_collections = [NodePath("CardPile3D"), NodePath("Hand3D")]
 
-[node name="Hand3D" parent="Hand" instance=ExtResource("2_upp1e")]
+[node name="CardPile3D" parent="Hand/DragController" instance=ExtResource("2_xppkv")]
+droppable = true
+
+[node name="Hand3D" parent="Hand/DragController" instance=ExtResource("2_upp1e")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, 0.5)
+draggable = true
+droppable = true
 
 [node name="Table" type="MeshInstance3D" parent="."]
 transform = Transform3D(12.8364, 0, 0, 0, -4.37114e-08, -6.94784, 0, 1, -3.037e-07, 0, 0, -1)
 mesh = SubResource("PlaneMesh_gv0to")
 surface_material_override/0 = SubResource("StandardMaterial3D_glsqp")
 
-[connection signal="drag_started" from="Hand/Hand3D" to="Hand" method="_on_hand_3d_drag_started"]
-[connection signal="drag_stopped" from="Hand/Hand3D" to="Hand" method="_on_hand_3d_drag_stopped"]
+[connection signal="drag_started" from="Hand/DragController/Hand3D" to="Hand" method="_on_hand_3d_drag_started"]
+[connection signal="drag_stopped" from="Hand/DragController/Hand3D" to="Hand" method="_on_hand_3d_drag_stopped"]
