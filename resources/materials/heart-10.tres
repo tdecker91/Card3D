@@ -1,6 +1,0 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dst8pv8h6ow3u"]
-
-[ext_resource type="Texture2D" uid="uid://dqbwad67phhcd" path="res://asset_lib/simple-card-pile-ui/assets/card_hearts_10.png" id="1_00wmo"]
-
-[resource]
-albedo_texture = ExtResource("1_00wmo")
