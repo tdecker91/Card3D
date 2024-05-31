@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1uvcisduvvj"]
+
+[ext_resource type="Script" path="res://addons/card_3d/scripts/card_collection_3d.gd" id="1_0ckh6"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_bpvrg"]
+points = PackedVector3Array(-7, 2, 0, -7, -2, 0, 7, -2, 0, 7, 2, 0)
+
+[node name="CardCollection3D" type="Node3D"]
+script = ExtResource("1_0ckh6")
+
+[node name="DropZone" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.6)
+collision_layer = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DropZone"]
+shape = SubResource("ConvexPolygonShape3D_bpvrg")
+disabled = true
+
+[connection signal="mouse_entered" from="DropZone" to="." method="_on_drop_zone_mouse_entered"]
+[connection signal="mouse_exited" from="DropZone" to="." method="_on_drop_zone_mouse_exited"]

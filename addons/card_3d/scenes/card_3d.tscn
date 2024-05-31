@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://dxpc2iac0hjpw"]
+
+[ext_resource type="Script" path="res://addons/card_3d/scripts/card_3d.gd" id="1_ll0aq"]
+[ext_resource type="Texture2D" uid="uid://b6bp4el47n1f6" path="res://example/assets/card_back.png" id="2_upnc6"]
+[ext_resource type="Material" uid="uid://h7vdysdtgmgu" path="res://example/materials/club-14.tres" id="3_7keew"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_a5dw2"]
+size = Vector2(2.5, 3.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k64yj"]
+albedo_texture = ExtResource("2_upnc6")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_o3bng"]
+size = Vector2(2.5, 3.5)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_21kd5"]
+points = PackedVector3Array(-1.25, 1.75, 0, -1.25, -1.75, 0, 1.25, -1.75, 0, 1.25, 1.75, 0)
+
+[node name="Card3D" type="Node3D"]
+script = ExtResource("1_ll0aq")
+
+[node name="CardMesh" type="Node3D" parent="."]
+
+[node name="CardBackMesh" type="MeshInstance3D" parent="CardMesh"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("PlaneMesh_a5dw2")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k64yj")
+
+[node name="CardFrontMesh" type="MeshInstance3D" parent="CardMesh"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("PlaneMesh_o3bng")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("3_7keew")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_21kd5")
+
+[connection signal="input_event" from="StaticBody3D" to="." method="_on_static_body_3d_input_event"]
+[connection signal="mouse_entered" from="StaticBody3D" to="." method="_on_static_body_3d_mouse_entered"]
+[connection signal="mouse_exited" from="StaticBody3D" to="." method="_on_static_body_3d_mouse_exited"]
