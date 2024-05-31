@@ -13,14 +13,6 @@ var end = Vector3(7,0,0.1)
 var card_width: float = 2.5
 var padding: float = 0.5
 
-#func calculate_card_positions(num_cards: int) -> Array[Vector3]:
-	#var positions: Array[Vector3] = []
-	#var step = 1.0 / (num_cards + 1)
-	#for i in range(1, num_cards + 1):
-		#var i_pos: Vector3 = start.lerp(end, i * step)
-		#positions.append(i_pos)
-	#
-	#return positions
 
 # where the first card will be on the x axis
 func _get_hand_start_x(hand_width: float, card_size: float) -> float:

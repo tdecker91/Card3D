@@ -1,3 +1,13 @@
+"""
+Card3D
+==============
+
+Script for the Card3D scene
+
+Usage:
+	- extend the card_3d scene and to add your custom card details
+	- extent Card3D class and apply it to your inherited scene
+"""
 class_name Card3D
 extends Node3D
 
@@ -16,6 +26,14 @@ signal card_3d_mouse_exit()
 var position_tween: Tween
 var rotate_tween: Tween
 var hover_tween: Tween
+
+
+func disable_collision():
+	$StaticBody3D/CollisionShape3D.disabled = true
+	
+	
+func enable_collision():
+	$StaticBody3D/CollisionShape3D.disabled = false
 
 
 func set_hovered():

@@ -1,10 +1,15 @@
-# card_collection.gd
-#
-# class for managing a collection of cards
-#   - adding cards
-#   - removing cards
-#   - positioning card nodes
-#   - adding animations
+"""
+CardCollection3D
+==========================
+
+This module handles manages a collection of Card3D nodes.
+
+Usage:
+	- add card collection 3D instance to scene
+	- update card layout behavior if desired (line, fan, pile)
+	- update collision shape if desired
+	- add Card3D nodes by calling the add or insert method 
+"""
 class_name CardCollection3D
 extends Node3D
 
@@ -110,6 +115,16 @@ func apply_card_layout():
 	card_layout_strategy.update_card_positions(cards, card_move_tween_duration)
 
 
+func preview_card_remove(dragging_card: Card3D):
+	if card_indicies.has(dragging_card):
+		var preview_cards: Array[Card3D] = []
+		var card_index = card_indicies[dragging_card]
+		preview_cards += cards.slice(0, card_index)
+		preview_cards += cards.slice(card_index + 1, cards.size())
+		
+		card_layout_strategy.update_card_positions(preview_cards, card_swap_tween_duration)
+
+
 func preview_card_drop(dragging_card: Card3D, index: int):
 	if index == _preview_drop_index:
 		return
@@ -186,6 +201,7 @@ func _on_drop_zone_mouse_entered():
 
 
 func _on_drop_zone_mouse_exited():
+	_preview_drop_index = -1
 	mouse_exit_drop_zone.emit()
 	
 
