@@ -71,6 +71,8 @@ func animate_to_position(new_position: Vector3, duration = move_tween_duration):
 		position_tween.kill()
 	
 	position_tween = create_tween()
+	position_tween.set_ease(Tween.EASE_OUT)
+	position_tween.set_trans(Tween.TRANS_SPRING)
 	_tween_card_position(new_position, duration)
 	return position_tween
 

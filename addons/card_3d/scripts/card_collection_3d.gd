@@ -25,8 +25,8 @@ signal card_selected(card)
 @export var reorderable: bool = false
 @export var insertable: bool = false
 @export var removable: bool = false
-@export var card_move_tween_duration: float = 0.12
-@export var card_swap_tween_duration: float = 0.12
+@export var card_move_tween_duration: float = .25
+@export var card_swap_tween_duration: float = .25
 @export var card_layout_strategy: CardLayout = LineCardLayout.new():
 	set(strategy):
 		card_layout_strategy = strategy

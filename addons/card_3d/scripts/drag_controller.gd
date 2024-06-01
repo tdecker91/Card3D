@@ -105,16 +105,16 @@ func _drag_card_start(card: Card3D, drag_from_collection: CardCollection3D):
 	_drag_from_collection = drag_from_collection
 	_dragging_card = card
 	_dragging_card.disable_collision()
+	_dragging_card.remove_hovered()
 	
 	_drag_from_collection.enable_drop_zone()
 	
-	if _drag_from_collection.removable:
-		for collection in _card_collections:
-			if collection.insertable:
-				collection.enable_drop_zone()
-				
-			if collection.draggable:
-				collection.selection_disabled = true
+	for collection in _card_collections:
+		if _drag_from_collection.removable and collection.insertable:
+			collection.enable_drop_zone()
+			
+		if collection.draggable:
+			collection.selection_disabled = true
 	
 	drag_started.emit(card)
 
