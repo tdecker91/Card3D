@@ -19,6 +19,7 @@ extends Node3D
 
 
 signal card_3d_mouse_down()
+signal card_3d_mouse_up()
 signal card_3d_mouse_over()
 signal card_3d_mouse_exit()
 
@@ -103,9 +104,11 @@ func _on_static_body_3d_mouse_exited():
 	card_3d_mouse_exit.emit()
 
 
-func _on_static_body_3d_input_event(_camera, event, _position, _normal, _shape_idx):
+func _on_static_body_3d_input_event(_camera, event, _event_position, _normal, _shape_idx):
 	if event is InputEventMouseButton:
 		var button = event.button_index
 		var pressed = event.pressed
 		if button == 1 and pressed == true:
 			card_3d_mouse_down.emit()
+		elif button == 1 and pressed == false:
+			card_3d_mouse_up.emit()
