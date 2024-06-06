@@ -86,7 +86,7 @@ func play_card(card):
   var card_global_position = hand.cards[card_index].global_position
   var c = hand.remove_card(card_index)
   
-  pile.add_card(c)
+  pile.append_card(c)
   c.remove_hovered()
   c.global_position = card_global_position
 
