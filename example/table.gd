@@ -51,7 +51,7 @@ func instantiate_face_card(rank, suit) -> FaceCard3D:
 func add_card():
   var data = next_card()
   var card = instantiate_face_card(data["rank"], data["suit"])
-  hand.add_card(card)
+  hand.append_card(card)
   card.global_position = $"../Deck".global_position
 
 

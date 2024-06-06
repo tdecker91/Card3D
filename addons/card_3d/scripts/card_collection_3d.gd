@@ -8,7 +8,9 @@ Usage:
   - add card collection 3D instance to scene
   - update card layout behavior if desired (line, fan, pile)
   - update collision shape if desired
-  - add Card3D nodes by calling the add or insert method 
+  - add Card3D nodes by calling the add or insert method
+  - extend CardCollection3D in your own script and override drag behavior methods to alter 
+    behaviour with your own game logic (can_select_card, can_insert_card, can_reorder_card, can_remove_card)
 """
 class_name CardCollection3D
 extends Node3D
@@ -17,14 +19,12 @@ extends Node3D
 signal mouse_enter_drop_zone()
 signal mouse_exit_drop_zone()
 signal card_selected(card)
+signal card_clicked(card)
 
 
 @onready var dropzone_collision: CollisionShape3D = $DropZone/CollisionShape3D
 
-
-@export var reorderable: bool = false
-@export var insertable: bool = false
-@export var removable: bool = false
+@export var highlight_on_hover: bool = true
 @export var card_move_tween_duration: float = .25
 @export var card_swap_tween_duration: float = .25
 @export var card_layout_strategy: CardLayout = LineCardLayout.new():
@@ -35,38 +35,34 @@ signal card_selected(card)
   set(v):
     if v != null:
       $DropZone/CollisionShape3D.shape = v
+@export var dropzone_z_offset: float = 1.6:
+  set(offset):
+    $DropZone.position.z = offset
 
-
-var draggable: bool:
-  get:
-    return reorderable or removable
 
 var cards: Array[Card3D] = []
 var card_indicies = {}
-var selection_disabled: bool = false
 
+var hover_disabled: bool = false # disable card hover animation (useful when dragging other cards around)
 var _hovered_card: Card3D # card currently hovered
 var _preview_drop_index: int = -1
 
+
 # add a card to the hand and animate it to the correct position
 # this will add card as child of this node
-func add_card(card: Card3D):
-  if draggable:
-    card.card_3d_mouse_down.connect(_on_card_pressed.bind(card))
-    card.card_3d_mouse_over.connect(_on_card_hover.bind(card))
-    card.card_3d_mouse_exit.connect(_on_card_exit.bind(card))
-    
-  cards.append(card)
-  card_indicies[card] = cards.size() - 1
-  add_child(card)
-  apply_card_layout()
+func append_card(card: Card3D):
+  insert_card(card, cards.size())
+
+
+func prepend_card(card: Card3D):
+  insert_card(card, 0)
 
 
 func insert_card(card: Card3D, index: int):
-  if draggable:
-    card.card_3d_mouse_down.connect(_on_card_pressed.bind(card))
-    card.card_3d_mouse_over.connect(_on_card_hover.bind(card))
-    card.card_3d_mouse_exit.connect(_on_card_exit.bind(card))
+  card.card_3d_mouse_down.connect(_on_card_pressed.bind(card))
+  card.card_3d_mouse_up.connect(_on_card_clicked.bind(card))
+  card.card_3d_mouse_over.connect(_on_card_hover.bind(card))
+  card.card_3d_mouse_exit.connect(_on_card_exit.bind(card))
     
   cards.insert(index, card)
   add_child(card)
@@ -75,6 +71,16 @@ func insert_card(card: Card3D, index: int):
     card_indicies[cards[i]] = i
     
   apply_card_layout()
+
+
+# remove and return card from the end of the list
+func pop_card() -> Card3D:
+  return remove_card(cards.size() - 1)
+  
+
+# remove and return card from the beggining of the list
+func shift_card() -> Card3D:
+  return remove_card(0)
 
 
 # remove card from this hand and return it.
@@ -91,11 +97,11 @@ func remove_card(index: int) -> Card3D:
   remove_child(removed_card)
   apply_card_layout()
   
-  if draggable:
-    removed_card.card_3d_mouse_down.disconnect(_on_card_pressed.bind(removed_card))
-    removed_card.card_3d_mouse_over.disconnect(_on_card_hover.bind(removed_card))
-    removed_card.card_3d_mouse_exit.disconnect(_on_card_exit.bind(removed_card))
-  
+  removed_card.card_3d_mouse_down.disconnect(_on_card_pressed.bind(removed_card))
+  removed_card.card_3d_mouse_up.disconnect(_on_card_clicked.bind(removed_card))
+  removed_card.card_3d_mouse_over.disconnect(_on_card_hover.bind(removed_card))
+  removed_card.card_3d_mouse_exit.disconnect(_on_card_exit.bind(removed_card))
+
   return removed_card
 
 
@@ -160,7 +166,6 @@ func disable_drop_zone():
 
 func on_drag_hover(dragging_card: Card3D, mouse_position: Vector2):
   var index_to_drop = get_card_index_at_point(mouse_position)
-  
   preview_card_drop(dragging_card, max(index_to_drop, 0))
 
 
@@ -180,20 +185,29 @@ func get_card_index_at_point(mouse_position: Vector2):
   return index
 
 
+# when a mouse enters card collision
+# set hover state, if applicable
 func _on_card_hover(card: Card3D):
-  if not selection_disabled:
+  if not hover_disabled and can_select_card(card):
     _hovered_card = card
-    card.set_hovered()
+    
+    if highlight_on_hover:
+      card.set_hovered()
 
 
 func _on_card_exit(card: Card3D):
-  if not selection_disabled and _hovered_card == card:
+  if not hover_disabled and _hovered_card == card:
     card.remove_hovered()
     _hovered_card = null
 
 
 func _on_card_pressed(card: Card3D):
-  card_selected.emit(card)
+  if can_select_card(card):
+    card_selected.emit(card)
+    
+
+func _on_card_clicked(card: Card3D):
+  card_clicked.emit(card)
 
 
 func _on_drop_zone_mouse_entered():
@@ -216,3 +230,21 @@ func _default_collision_shape() -> Shape3D:
     ]
   )
   return shape
+
+
+# whether or not a card can be selected
+func can_select_card(_card) -> bool:
+  return true
+
+
+func can_remove_card(_card) -> bool:
+  return true
+
+
+func can_reorder_card(_card) -> bool:
+  return true
+
+
+# if the card can be inserted to the collection
+func can_insert_card(_card, _from_collection) -> bool:
+  return true

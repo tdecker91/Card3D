@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://cviptf2wh1pc0"]
+
+[ext_resource type="Script" path="res://example_solitaire/scenes/pile_marker.gd" id="1_we1f7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tdlkb"]
+albedo_color = Color(0.164183, 0.323424, 0.243959, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ikwlt"]
+size = Vector2(2.5, 3.5)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7uh6v"]
+points = PackedVector3Array(-1.25, 1.75, 0, 1.25, 1.75, 0, 1.25, -1.75, 0, -1.25, -1.75, 0)
+
+[node name="PileMarker" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -15, 7, 0)
+material_override = SubResource("StandardMaterial3D_tdlkb")
+mesh = SubResource("PlaneMesh_ikwlt")
+script = ExtResource("1_we1f7")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_7uh6v")
+
+[connection signal="input_event" from="StaticBody3D" to="." method="_on_static_body_3d_input_event"]

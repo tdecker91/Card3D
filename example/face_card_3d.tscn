@@ -5,6 +5,7 @@
 
 [node name="FaceCard3D" instance=ExtResource("1_mhw3m")]
 script = ExtResource("2_swl73")
+data = {}
 rank = 2
 suit = 1
 front_material_path = ""

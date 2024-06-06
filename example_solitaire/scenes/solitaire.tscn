@@ -1,0 +1,223 @@
+[gd_scene load_steps=32 format=3 uid="uid://b3nx7g0iu2cd3"]
+
+[ext_resource type="Script" path="res://example_solitaire/scenes/solitaire.gd" id="1_vfkpr"]
+[ext_resource type="Script" path="res://addons/card_3d/scripts/drag_controller.gd" id="2_evxo0"]
+[ext_resource type="PackedScene" uid="uid://d1uvcisduvvj" path="res://addons/card_3d/scenes/card_collection_3d.tscn" id="3_kmjqy"]
+[ext_resource type="Script" path="res://example_solitaire/scripts/draw_pile.gd" id="4_mvhgr"]
+[ext_resource type="Script" path="res://addons/card_3d/scripts/card_layouts/pile_card_layout.gd" id="4_ykggm"]
+[ext_resource type="Script" path="res://example_solitaire/scripts/card_column.gd" id="5_j26y4"]
+[ext_resource type="Script" path="res://example_solitaire/scripts/suit_discard.gd" id="5_vnftc"]
+[ext_resource type="Script" path="res://example_solitaire/scripts/stack_layout.gd" id="5_y307u"]
+[ext_resource type="Shape3D" uid="uid://b4ul43sikpt87" path="res://example_solitaire/column_collision.tres" id="8_bfwbd"]
+[ext_resource type="PackedScene" uid="uid://cviptf2wh1pc0" path="res://example_solitaire/scenes/pile_marker.tscn" id="9_xrvyx"]
+[ext_resource type="Script" path="res://example_solitaire/scripts/deck.gd" id="10_0hsa4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_3x48k"]
+size = Vector3(50, 30, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6u6h1"]
+albedo_color = Color(0.207843, 0.396078, 0.301961, 1)
+
+[sub_resource type="Resource" id="Resource_vv0ke"]
+script = ExtResource("4_ykggm")
+pile_y_offset = 0.0
+
+[sub_resource type="Resource" id="Resource_mnku1"]
+script = ExtResource("4_ykggm")
+pile_y_offset = 0.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gk0xa"]
+size = Vector3(3, 4, 0.5)
+
+[sub_resource type="Resource" id="Resource_tcgem"]
+script = ExtResource("4_ykggm")
+pile_y_offset = 0.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gmwdc"]
+size = Vector3(3, 4, 0.5)
+
+[sub_resource type="Resource" id="Resource_mqdnk"]
+script = ExtResource("4_ykggm")
+pile_y_offset = 0.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sqpmy"]
+size = Vector3(3, 4, 0.5)
+
+[sub_resource type="Resource" id="Resource_686io"]
+script = ExtResource("4_ykggm")
+pile_y_offset = 0.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rescc"]
+size = Vector3(3, 4, 0.5)
+
+[sub_resource type="Resource" id="Resource_pprhl"]
+script = ExtResource("5_y307u")
+distance = 0.8
+
+[sub_resource type="Resource" id="Resource_xa5h1"]
+script = ExtResource("5_y307u")
+distance = 0.8
+
+[sub_resource type="Resource" id="Resource_nx85c"]
+script = ExtResource("5_y307u")
+distance = 0.8
+
+[sub_resource type="Resource" id="Resource_vr3hi"]
+script = ExtResource("5_y307u")
+distance = 0.8
+
+[sub_resource type="Resource" id="Resource_i28x6"]
+script = ExtResource("5_y307u")
+distance = 0.8
+
+[sub_resource type="Resource" id="Resource_10me3"]
+script = ExtResource("5_y307u")
+distance = 0.8
+
+[sub_resource type="Resource" id="Resource_inowq"]
+script = ExtResource("5_y307u")
+distance = 0.8
+
+[sub_resource type="Resource" id="Resource_4ui3d"]
+script = ExtResource("4_ykggm")
+pile_y_offset = 0.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_iid3l"]
+size = Vector3(2.5, 3.5, 2)
+
+[node name="Solitaire" type="Node3D"]
+script = ExtResource("1_vfkpr")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.96506, 0, 13.519)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.918556)
+mesh = SubResource("BoxMesh_3x48k")
+surface_material_override/0 = SubResource("StandardMaterial3D_6u6h1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.0128)
+
+[node name="DragController" type="Node3D" parent="."]
+script = ExtResource("2_evxo0")
+
+[node name="Draw" parent="DragController" instance=ExtResource("3_kmjqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 7, 0)
+script = ExtResource("4_mvhgr")
+highlight_on_hover = false
+card_layout_strategy = SubResource("Resource_vv0ke")
+
+[node name="SuitDiscard1" parent="DragController" instance=ExtResource("3_kmjqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 7, 0)
+script = ExtResource("5_vnftc")
+highlight_on_hover = false
+card_layout_strategy = SubResource("Resource_mnku1")
+dropzone_collision_shape = SubResource("BoxShape3D_gk0xa")
+dropzone_z_offset = 0.0
+
+[node name="SuitDiscard2" parent="DragController" instance=ExtResource("3_kmjqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 7, 0)
+script = ExtResource("5_vnftc")
+highlight_on_hover = false
+card_layout_strategy = SubResource("Resource_tcgem")
+dropzone_collision_shape = SubResource("BoxShape3D_gmwdc")
+dropzone_z_offset = 0.0
+
+[node name="SuitDiscard3" parent="DragController" instance=ExtResource("3_kmjqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 7, 0)
+script = ExtResource("5_vnftc")
+highlight_on_hover = false
+card_layout_strategy = SubResource("Resource_mqdnk")
+dropzone_collision_shape = SubResource("BoxShape3D_sqpmy")
+dropzone_z_offset = 0.0
+
+[node name="SuitDiscard4" parent="DragController" instance=ExtResource("3_kmjqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 7, 0)
+script = ExtResource("5_vnftc")
+highlight_on_hover = false
+card_layout_strategy = SubResource("Resource_686io")
+dropzone_collision_shape = SubResource("BoxShape3D_rescc")
+dropzone_z_offset = 0.0
+
+[node name="Column1" parent="DragController" instance=ExtResource("3_kmjqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0)
+script = ExtResource("5_j26y4")
+highlight_on_hover = false
+card_layout_strategy = SubResource("Resource_pprhl")
+dropzone_collision_shape = ExtResource("8_bfwbd")
+dropzone_z_offset = 0.0
+
+[node name="Column2" parent="DragController" instance=ExtResource("3_kmjqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 0)
+script = ExtResource("5_j26y4")
+highlight_on_hover = false
+card_layout_strategy = SubResource("Resource_xa5h1")
+dropzone_collision_shape = ExtResource("8_bfwbd")
+dropzone_z_offset = 0.0
+
+[node name="Column3" parent="DragController" instance=ExtResource("3_kmjqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, 0)
+script = ExtResource("5_j26y4")
+highlight_on_hover = false
+card_layout_strategy = SubResource("Resource_nx85c")
+dropzone_collision_shape = ExtResource("8_bfwbd")
+dropzone_z_offset = 0.0
+
+[node name="Column4" parent="DragController" instance=ExtResource("3_kmjqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+script = ExtResource("5_j26y4")
+highlight_on_hover = false
+card_layout_strategy = SubResource("Resource_vr3hi")
+dropzone_collision_shape = ExtResource("8_bfwbd")
+dropzone_z_offset = 0.0
+
+[node name="Column5" parent="DragController" instance=ExtResource("3_kmjqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+script = ExtResource("5_j26y4")
+highlight_on_hover = false
+card_layout_strategy = SubResource("Resource_i28x6")
+dropzone_collision_shape = ExtResource("8_bfwbd")
+dropzone_z_offset = 0.0
+
+[node name="Column6" parent="DragController" instance=ExtResource("3_kmjqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
+script = ExtResource("5_j26y4")
+highlight_on_hover = false
+card_layout_strategy = SubResource("Resource_10me3")
+dropzone_collision_shape = ExtResource("8_bfwbd")
+dropzone_z_offset = 0.0
+
+[node name="Column7" parent="DragController" instance=ExtResource("3_kmjqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 0)
+script = ExtResource("5_j26y4")
+highlight_on_hover = false
+card_layout_strategy = SubResource("Resource_inowq")
+dropzone_collision_shape = ExtResource("8_bfwbd")
+dropzone_z_offset = 0.0
+
+[node name="Deck" parent="." instance=ExtResource("3_kmjqy")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -15, 7, 0)
+script = ExtResource("10_0hsa4")
+highlight_on_hover = false
+card_layout_strategy = SubResource("Resource_4ui3d")
+dropzone_collision_shape = SubResource("BoxShape3D_iid3l")
+
+[node name="EmptyDeck" parent="." instance=ExtResource("9_xrvyx")]
+visible = false
+
+[node name="PileMarker" parent="." instance=ExtResource("9_xrvyx")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -3, 7, -0.5)
+
+[node name="PileMarker2" parent="." instance=ExtResource("9_xrvyx")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 1, 7, -0.5)
+
+[node name="PileMarker3" parent="." instance=ExtResource("9_xrvyx")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 5, 7, -0.5)
+
+[node name="PileMarker4" parent="." instance=ExtResource("9_xrvyx")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 9, 7, -0.5)
+
+[connection signal="card_moved" from="DragController" to="." method="_on_drag_controller_card_moved"]
+[connection signal="card_selected" from="Deck" to="." method="_on_deck_card_selected"]
+[connection signal="on_click" from="EmptyDeck" to="." method="_on_empty_deck_on_click"]
