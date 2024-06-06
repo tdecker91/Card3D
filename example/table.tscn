@@ -17,7 +17,7 @@ script = ExtResource("5_rd2gk")
 size = Vector2(40, 20)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glsqp"]
-albedo_color = Color(0.216064, 0.381157, 0.183052, 1)
+albedo_color = Color(0.207843, 0.396078, 0.301961, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_g1lkx"]
 size = Vector3(2.5, 3.5, 0.2)
@@ -32,6 +32,7 @@ shadow_blur = 5.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9)
+current = true
 fov = 84.375
 
 [node name="Table" type="Node3D" parent="."]
@@ -41,14 +42,10 @@ script = ExtResource("1_trlmi")
 script = ExtResource("2_07uyt")
 
 [node name="TableCards" parent="Table/DragController" instance=ExtResource("3_pqjp5")]
-reorderable = true
-insertable = true
 card_layout_strategy = SubResource("Resource_yq80r")
 
 [node name="Hand" parent="Table/DragController" instance=ExtResource("3_pqjp5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0.5)
-reorderable = true
-removable = true
 card_layout_strategy = SubResource("Resource_w17iw")
 
 [node name="TableSurface" type="MeshInstance3D" parent="Table"]

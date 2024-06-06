@@ -8,14 +8,14 @@ for CardCollection3D nodes.
 Usage:
   - add drag controller instance to scene
   - add some CardCollection3D instances to scene as children of the drag controller
-  - define drag behavior on collections by setting "Reorderable", "Insertable" and/or "Removable"
+  - define drag behavior on collections by overridding drag methods (can_select_card, can_insert_card, can_reorder_card, can_remove_card)
 """
 class_name DragController
 extends Node3D
 
 
 signal drag_started(card)
-signal drag_stopped()
+signal card_moved(card, from_collection, to_collection, from_index, to_index)
 
 
 @export var max_drag_y_rotation_deg: int = 65
@@ -33,8 +33,8 @@ var _dragging: bool = false
 var _hovered_collection: CardCollection3D # collection about to drop card into
 var _card_collections: Array[CardCollection3D] = []
 
+
 func _ready():
-  
   var window = get_window()
   _camera = window.get_camera_3d()
   
@@ -74,27 +74,34 @@ func _on_collection_mouse_exit_drop_zone(_collection: CardCollection3D):
 
 
 func _return_card_to_collection(mouse_position: Vector2):
-  var current_index = _drag_from_collection.card_indicies[_dragging_card]
-  var new_index = _drag_from_collection.get_card_index_at_point(mouse_position)
-  new_index = clamp(new_index, 0, _drag_from_collection.cards.size() - 1)
-  
-  if current_index != new_index:
-    _drag_from_collection.remove_card(current_index)
-    _drag_from_collection.insert_card(_dragging_card, new_index)
+  if _drag_from_collection.can_reorder_card(_dragging_card):
+    var current_index = _drag_from_collection.card_indicies[_dragging_card]
+    var new_index = _drag_from_collection.get_card_index_at_point(mouse_position)
+    new_index = clamp(new_index, 0, _drag_from_collection.cards.size() - 1)
+    
+    if current_index != new_index:
+      _drag_from_collection.remove_card(current_index)
+      _drag_from_collection.insert_card(_dragging_card, new_index)
+      card_moved.emit(_dragging_card, _drag_from_collection, _drag_from_collection, current_index, new_index)
     
   _drag_from_collection.apply_card_layout()
 
 
 func _drop_card_to_another_collection(mouse_position: Vector2):
+  if not _hovered_collection.can_insert_card(_dragging_card, _drag_from_collection):
+    return
+  
   var card_index = _drag_from_collection.card_indicies[_dragging_card]
   var card_global_position = _drag_from_collection.cards[card_index].global_position
   var c = _drag_from_collection.remove_card(card_index)
   
-  if _hovered_collection.reorderable:
+  if _hovered_collection.can_reorder_card(c):
     var index = _hovered_collection.get_card_index_at_point(mouse_position)
     _hovered_collection.insert_card(c, index)
+    card_moved.emit(_dragging_card, _drag_from_collection, _hovered_collection, card_index, index)
   else:
-    _hovered_collection.add_card(c)
+    _hovered_collection.append_card(c)
+    card_moved.emit(_dragging_card, _drag_from_collection, _hovered_collection, card_index, _hovered_collection.cards.size() - 1)
   
   c.remove_hovered()
   c.global_position = card_global_position
@@ -110,16 +117,22 @@ func _drag_card_start(card: Card3D, drag_from_collection: CardCollection3D):
   _drag_from_collection.enable_drop_zone()
   
   for collection in _card_collections:
-    if _drag_from_collection.removable and collection.insertable:
+    if collection.can_insert_card(_dragging_card, _drag_from_collection):
       collection.enable_drop_zone()
-      
-    if collection.draggable:
-      collection.selection_disabled = true
+    
+    collection.hover_disabled = true
   
   drag_started.emit(card)
 
 
 func _stop_drag(mouse_position: Vector2):
+  var can_insert: bool = true
+  
+  if _hovered_collection != null:
+    can_insert = _hovered_collection.can_insert_card(_dragging_card, _drag_from_collection)
+  
+  if not can_insert:
+    _return_card_to_collection(mouse_position)
   if _hovered_collection == null or _hovered_collection == _drag_from_collection:
     _return_card_to_collection(mouse_position)
   elif _hovered_collection != null and _hovered_collection != _drag_from_collection:
@@ -127,19 +140,18 @@ func _stop_drag(mouse_position: Vector2):
     
   _drag_from_collection.disable_drop_zone()
   _dragging_card.enable_collision()
+  
+  var card = _dragging_card
+  var from_collection = _drag_from_collection
+  var to_collection = _hovered_collection
 
   _dragging = false
   _dragging_card = null
   _drag_from_collection = null
   
   for collection in _card_collections:
-    if collection.insertable:
-      collection.disable_drop_zone()
-      
-    if collection.draggable:
-      collection.selection_disabled = false
-  
-  drag_stopped.emit()
+    collection.disable_drop_zone()
+    collection.hover_disabled = false
 
 
 func _handle_drag_event(_event: InputEventMouseMotion):
@@ -175,7 +187,7 @@ func _handle_drag_event(_event: InputEventMouseMotion):
   _dragging_card.global_position.y = position3D.y
   _dragging_card.global_position.z = position3D.z
   
-  if _hovered_collection != null and position3D != null and _hovered_collection.reorderable:
+  if _hovered_collection != null and position3D != null and _hovered_collection.can_reorder_card(_dragging_card):
     var drag_screen_point = _get_drag_screen_point(position3D)
     _hovered_collection.on_drag_hover(_dragging_card, drag_screen_point)
 
@@ -185,4 +197,3 @@ func _get_drag_screen_point(world_position: Vector3):
     return _camera.unproject_position(world_position)
   else:
     return null
-    

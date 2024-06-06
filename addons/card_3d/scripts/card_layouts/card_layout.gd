@@ -6,6 +6,7 @@ extends Resource
 func update_card_positions(cards: Array[Card3D], duration: float):
   var positions = calculate_card_positions(cards.size())
   var rotations = calculate_card_rotations(cards.size())
+  
   for i in range(cards.size()):
     var card = cards[i]
     if card != null:

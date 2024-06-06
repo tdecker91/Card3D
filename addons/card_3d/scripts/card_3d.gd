@@ -16,7 +16,13 @@ extends Node3D
 @export var hover_pos_move: Vector3 = Vector3(0, 0.7, 0)
 @export var move_tween_duration: float = 0.08
 @export var rotate_tween_duration: float = 0.15
-
+@export var face_down: bool = false:
+  set(_face_down):
+    face_down = _face_down
+    if face_down:
+      $CardMesh.rotation = Vector3(0, deg_to_rad(-180), 0)
+    else:
+      $CardMesh.rotation = Vector3(0, 0, 0)
 
 signal card_3d_mouse_down()
 signal card_3d_mouse_up()
@@ -71,6 +77,7 @@ func animate_to_position(new_position: Vector3, duration = move_tween_duration):
   if position_tween and position_tween.is_running:
     position_tween.kill()
   
+  position.z = new_position.z # set z to prevent transition spring from making card go below another card
   position_tween = create_tween()
   position_tween.set_ease(Tween.EASE_OUT)
   position_tween.set_trans(Tween.TRANS_SPRING)

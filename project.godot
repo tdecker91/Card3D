@@ -13,4 +13,4 @@ config_version=5
 config/name="Cards"
 run/main_scene="res://example/table.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://icon.png"
