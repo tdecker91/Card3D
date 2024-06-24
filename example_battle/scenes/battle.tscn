@@ -1,0 +1,56 @@
+[gd_scene load_steps=10 format=3 uid="uid://fdx3muhixky4"]
+
+[ext_resource type="Script" path="res://example_battle/scenes/battle.gd" id="1_wmhlq"]
+[ext_resource type="PackedScene" uid="uid://d1uvcisduvvj" path="res://addons/card_3d/scenes/card_collection_3d.tscn" id="2_6x4v1"]
+[ext_resource type="Script" path="res://addons/card_3d/scripts/drag_controller.gd" id="2_qm7by"]
+[ext_resource type="Script" path="res://addons/card_3d/scripts/card_layouts/fan_card_layout.gd" id="3_0udwp"]
+[ext_resource type="Script" path="res://example_battle/scripts/play_card_dropzone.gd" id="4_d6qeg"]
+[ext_resource type="PackedScene" uid="uid://4dl436anjvr6" path="res://example_battle/scenes/battle_card_3d.tscn" id="6_lretv"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_jjfpl"]
+size = Vector2(50, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s1erc"]
+albedo_color = Color(0.207843, 0.396078, 0.301961, 1)
+
+[sub_resource type="Resource" id="Resource_eexvo"]
+script = ExtResource("3_0udwp")
+
+[node name="Battle" type="Node3D"]
+script = ExtResource("1_wmhlq")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40.2273)
+shadow_enabled = true
+shadow_opacity = 0.75
+shadow_blur = 6.15
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.04531)
+
+[node name="Table" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 1.30608)
+mesh = SubResource("PlaneMesh_jjfpl")
+surface_material_override/0 = SubResource("StandardMaterial3D_s1erc")
+
+[node name="DragController" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.97393)
+script = ExtResource("2_qm7by")
+card_drag_plane = Plane(0, 0, 1, 4)
+
+[node name="PlayZone" parent="DragController" instance=ExtResource("2_6x4v1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.309844)
+script = ExtResource("4_d6qeg")
+play_enabled = true
+highlight_on_hover = false
+
+[node name="CardCollection3D" parent="DragController" instance=ExtResource("2_6x4v1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.39072, 0)
+card_layout_strategy = SubResource("Resource_eexvo")
+
+[node name="Monster" parent="." instance=ExtResource("6_lretv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.699603, 2.60341)
+front_material_path = "res://example_battle/materials/ghost-card.tres"
+health = 7
+
+[connection signal="card_added" from="DragController/PlayZone" to="." method="_on_play_zone_card_added"]

@@ -20,6 +20,7 @@ signal mouse_enter_drop_zone()
 signal mouse_exit_drop_zone()
 signal card_selected(card)
 signal card_clicked(card)
+signal card_added(card)
 
 
 @onready var dropzone_collision: CollisionShape3D = $DropZone/CollisionShape3D
@@ -69,8 +70,9 @@ func insert_card(card: Card3D, index: int):
   
   for i in range(index, cards.size()):
     card_indicies[cards[i]] = i
-    
+  
   apply_card_layout()
+  card_added.emit(card)
 
 
 # remove and return card from the end of the list

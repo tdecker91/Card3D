@@ -91,7 +91,7 @@ func _tween_card_scale(scale_factor: float):
 
 
 func _tween_mesh_position(pos: Vector3, duration: float):
-  hover_tween.tween_property($CardMesh/CardFrontMesh, "position", pos, duration)
+  hover_tween.tween_property($CardMesh, "position", pos, duration)
 
 
 func _tween_card_position(pos: Vector3, duration: float):

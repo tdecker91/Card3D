@@ -16,9 +16,9 @@ This library is designed to be flexible and extendable for any card game. It off
 
 ![Card Collection Overview](https://raw.githubusercontent.com/tdecker91/Card3D/main/screenshots/screenshot_1.png)
 
-![Card Hover Animation](https://raw.githubusercontent.com/tdecker91/Card3D/main/screenshots/screenshot_2.png)
+![Solitaire Example](https://raw.githubusercontent.com/tdecker91/Card3D/main/screenshots/screenshot_4.png)
 
-![Cards in pile](https://raw.githubusercontent.com/tdecker91/Card3D/main/screenshots/screenshot_3.png)
+![Different Style Example](https://raw.githubusercontent.com/tdecker91/Card3D/main/screenshots/screenshot_6.png)
 
 ## Installation
 
