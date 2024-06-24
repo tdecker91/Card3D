@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://4dl436anjvr6"]
+
+[ext_resource type="PackedScene" uid="uid://dxpc2iac0hjpw" path="res://addons/card_3d/scenes/card_3d.tscn" id="1_xagun"]
+[ext_resource type="Script" path="res://example_battle/scripts/battle_card_3d.gd" id="2_icem3"]
+
+[node name="BattleCard3D" instance=ExtResource("1_xagun")]
+script = ExtResource("2_icem3")
+id = ""
+front_material_path = ""
+damage = 0
+health = 0
+
+[node name="CardText" type="Label3D" parent="CardMesh" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.875, 0.001)
+modulate = Color(0, 0, 0, 1)
+font_size = 60
+autowrap_mode = 3
+width = 400.0

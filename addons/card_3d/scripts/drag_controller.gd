@@ -22,7 +22,7 @@ signal card_moved(card, from_collection, to_collection, from_index, to_index)
 @export var max_drag_x_rotation_deg: int = 65
 
 
-var card_drag_plane = Plane(Vector3(0, 0, 1), 1.5): # plane card is moved across on drag
+@export var card_drag_plane = Plane(Vector3(0, 0, 1), 1.5): # plane card is moved across on drag
   set(plane):
     card_drag_plane = plane
 
