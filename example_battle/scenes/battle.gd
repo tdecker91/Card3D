@@ -20,7 +20,7 @@ func add_card(card_id):
 	battle_card_3d.id = card_data["id"]
 	battle_card_3d.front_material_path = card_data["front_material_path"]
 	battle_card_3d.damage = card_data["damage"]
-  
+
 	var hand: CardCollection3D = $DragController/CardCollection3D
 	hand.append_card(battle_card_3d)
 
