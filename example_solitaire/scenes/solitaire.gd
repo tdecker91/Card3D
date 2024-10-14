@@ -25,25 +25,25 @@ var card_database = FaceCards.new()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var card_deck: Array[FaceCard3D] = []
-  
+
 	for suit in FaceCards.Suit:
 		for rank in FaceCards.Rank:
 			card_deck.push_back(instantiate_face_card(FaceCards.Rank[rank], FaceCards.Suit[suit]))
-	  
+
 	card_deck.shuffle()
-  
+
 	var columns: Array[CardCollection3D] = [column1, column2, column3, column4, column5, column6, column7]
 	var j = 1
-  
+	
 	for column in columns:
 		for num in range(j):
 			var card = card_deck.pop_front()
 			if num != j - 1:
 				card.face_down = true
 			column.append_card(card)
-	  
+
 	j += 1
-  
+
 	for card in card_deck:
 		deck_collection.append_card(card)
 	
@@ -61,7 +61,7 @@ func instantiate_face_card(rank, suit) -> FaceCard3D:
 
 	var card_data: Dictionary = card_database.get_card_data(rank, suit)
 	face_card_3d.data = card_data
-  
+
 	return face_card_3d
 
 
@@ -99,7 +99,7 @@ func _on_drag_controller_card_moved(_card: FaceCard3D, from_collection: CardColl
 	
 	if not from_collection is CardColumn or not to_collection is CardColumn:
 		return
-  
+
 	while from_collection.cards.size() > from_index: 
 		var new_position = from_collection.cards[from_index].global_position
 		var card = from_collection.remove_card(from_index)
