@@ -55,4 +55,4 @@ func _generate_all_face_cards() -> Dictionary:
 			var card_id = get_card_id(Rank[rank], Suit[suit])
 			_data[card_id] = card_data
 			
-	return _data 
+	return _data
