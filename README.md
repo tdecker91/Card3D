@@ -22,7 +22,7 @@ This library is designed to be flexible and extendable for any card game. It off
 
 ## Installation
 
-import the project from the Godot asset library
+import the asset from the Godot asset library into an existing project
 
 ## Usage
 
