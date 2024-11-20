@@ -47,8 +47,8 @@ func _generate_all_face_cards() -> Dictionary:
 			var front_material = "res://example/materials/" + str(suit).to_lower() + "-" + str(Rank[rank]) + ".tres"
 			var back_material = "res://example/materials/card-back.tres"
 			var card_data = {
-			"rank": rank,
-			"suit": suit,
+			"rank": Rank[rank],
+			"suit": Suit[suit],
 			"front_material_path": front_material,
 			"back_material_path": back_material
 			}
