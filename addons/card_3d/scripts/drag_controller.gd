@@ -129,11 +129,11 @@ func _stop_drag(mouse_position: Vector2):
 	var can_insert: bool = true
 	
 	if _hovered_collection != null:
-		can_insert = _hovered_collection.can_insert_card(_dragging_card, _drag_from_collection)
-	
+		can_insert = _hovered_collection.can_insert_card(_dragging_card, _drag_from_collection) and _drag_from_collection.can_remove_card(_dragging_card)
+		
 	if not can_insert:
 		_return_card_to_collection(mouse_position)
-	if _hovered_collection == null or _hovered_collection == _drag_from_collection:
+	elif _hovered_collection == null or _hovered_collection == _drag_from_collection:
 		_return_card_to_collection(mouse_position)
 	elif _hovered_collection != null and _hovered_collection != _drag_from_collection:
 		_drop_card_to_another_collection(mouse_position)
