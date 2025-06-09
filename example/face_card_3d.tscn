@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bjx4ugu14qx3w"]
 
 [ext_resource type="PackedScene" uid="uid://dxpc2iac0hjpw" path="res://addons/card_3d/scenes/card_3d.tscn" id="1_mhw3m"]
-[ext_resource type="Script" path="res://example/face_card_3d.gd" id="2_swl73"]
+[ext_resource type="Script" uid="uid://j5jsukmu6jfs" path="res://example/face_card_3d.gd" id="2_swl73"]
 
 [node name="FaceCard3D" instance=ExtResource("1_mhw3m")]
 script = ExtResource("2_swl73")

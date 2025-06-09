@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cviptf2wh1pc0"]
 
-[ext_resource type="Script" path="res://example_solitaire/scenes/pile_marker.gd" id="1_we1f7"]
+[ext_resource type="Script" uid="uid://cnf54cbk7b4nt" path="res://example_solitaire/scenes/pile_marker.gd" id="1_we1f7"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tdlkb"]
 albedo_color = Color(0.164183, 0.323424, 0.243959, 1)

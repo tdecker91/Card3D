@@ -1,10 +1,10 @@
 [gd_scene load_steps=16 format=3 uid="uid://usdfp6fqxnev"]
 
-[ext_resource type="Script" path="res://example/table.gd" id="1_trlmi"]
-[ext_resource type="Script" path="res://addons/card_3d/scripts/drag_controller.gd" id="2_07uyt"]
+[ext_resource type="Script" uid="uid://b1feq0lta5uai" path="res://example/table.gd" id="1_trlmi"]
+[ext_resource type="Script" uid="uid://bklf1k5ntdamo" path="res://addons/card_3d/scripts/drag_controller.gd" id="2_07uyt"]
 [ext_resource type="PackedScene" uid="uid://d1uvcisduvvj" path="res://addons/card_3d/scenes/card_collection_3d.tscn" id="3_pqjp5"]
-[ext_resource type="Script" path="res://addons/card_3d/scripts/card_layouts/line_card_layout.gd" id="4_t7f8m"]
-[ext_resource type="Script" path="res://addons/card_3d/scripts/card_layouts/fan_card_layout.gd" id="5_rd2gk"]
+[ext_resource type="Script" uid="uid://c5654am7e8aul" path="res://addons/card_3d/scripts/card_layouts/line_card_layout.gd" id="4_t7f8m"]
+[ext_resource type="Script" uid="uid://dbuw78ioupc4i" path="res://addons/card_3d/scripts/card_layouts/fan_card_layout.gd" id="5_rd2gk"]
 [ext_resource type="PackedScene" uid="uid://bjx4ugu14qx3w" path="res://example/face_card_3d.tscn" id="6_qtugc"]
 
 [sub_resource type="Resource" id="Resource_yq80r"]
