@@ -20,9 +20,9 @@ extends Node3D
 	set(_face_down):
 		face_down = _face_down
 		if face_down:
-			$CardMesh.rotation = Vector3(0, deg_to_rad(-180), 0)
+			$CardMesh.rotation.y = PI
 		else:
-			$CardMesh.rotation = Vector3(0, 0, 0)
+			$CardMesh.rotation.y = 0
 
 signal card_3d_mouse_down()
 signal card_3d_mouse_up()
