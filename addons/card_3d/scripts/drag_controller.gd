@@ -16,7 +16,7 @@ extends Node3D
 
 signal drag_started(card)
 signal card_moved(card, from_collection, to_collection, from_index, to_index)
-
+var gizmo: MeshInstance3D
 
 @export var max_drag_y_rotation_deg: int = 65
 @export var max_drag_x_rotation_deg: int = 65
@@ -37,6 +37,8 @@ var _card_collections: Array[CardCollection3D] = []
 func _ready():
 	var window = get_window()
 	_camera = window.get_camera_3d()
+	
+	gizmo = $"../../Gizmo"
 	
 	for child in get_children():
 		if child is CardCollection3D:
@@ -61,6 +63,7 @@ func _on_collection_card_selected(card: Card3D, collection: CardCollection3D):
 
 
 func _on_collection_mouse_enter_drop_zone(collection: CardCollection3D):
+	print("hovered over collection" + str(collection))
 	_hovered_collection = collection
 
 
@@ -159,6 +162,8 @@ func _handle_drag_event(_event: InputEventMouseMotion):
 	var position3D = card_drag_plane.intersects_ray(_camera.project_ray_origin(m),_camera.project_ray_normal(m))
 	var card_position = _dragging_card.global_position
 	
+	#gizmo.position = position3D
+	
 	var x_distance = position3D.x - card_position.x
 	var y_distance = position3D.y - card_position.y
 	
@@ -190,6 +195,9 @@ func _handle_drag_event(_event: InputEventMouseMotion):
 	if _hovered_collection != null and position3D != null and _hovered_collection.can_reorder_card(_dragging_card):
 		var drag_screen_point = _get_drag_screen_point(position3D)
 		_hovered_collection.on_drag_hover(_dragging_card, drag_screen_point)
+		
+		# find point on dropzone where mouse intersects
+		_hovered_collection.dropzone_collision
 
 
 func _get_drag_screen_point(world_position: Vector3):

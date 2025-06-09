@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://usdfp6fqxnev"]
+[gd_scene load_steps=16 format=3 uid="uid://usdfp6fqxnev"]
 
 [ext_resource type="Script" path="res://example/table.gd" id="1_trlmi"]
 [ext_resource type="Script" path="res://addons/card_3d/scripts/drag_controller.gd" id="2_07uyt"]
@@ -21,6 +21,18 @@ albedo_color = Color(0.207843, 0.396078, 0.301961, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_g1lkx"]
 size = Vector3(2.5, 3.5, 0.2)
+
+[sub_resource type="SphereMesh" id="SphereMesh_hy8s3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xerab"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 1)
+disable_receive_shadows = true
+
+[sub_resource type="PrismMesh" id="PrismMesh_1yawl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7g5k0"]
+albedo_color = Color(0, 0, 1, 1)
 
 [node name="Node3D" type="Node3D"]
 
@@ -45,7 +57,7 @@ script = ExtResource("2_07uyt")
 card_layout_strategy = SubResource("Resource_yq80r")
 
 [node name="Hand" parent="Table/DragController" instance=ExtResource("3_pqjp5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0.5)
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 4.03226, 0.5)
 card_layout_strategy = SubResource("Resource_w17iw")
 
 [node name="TableSurface" type="MeshInstance3D" parent="Table"]
@@ -62,5 +74,13 @@ suit = 3
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Deck"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.111376)
 mesh = SubResource("BoxMesh_g1lkx")
+
+[node name="Gizmo" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_hy8s3")
+surface_material_override/0 = SubResource("StandardMaterial3D_xerab")
+
+[node name="Gizmo2" type="MeshInstance3D" parent="."]
+mesh = SubResource("PrismMesh_1yawl")
+surface_material_override/0 = SubResource("StandardMaterial3D_7g5k0")
 
 [connection signal="card_3d_mouse_up" from="Deck" to="Table" method="_on_face_card_3d_card_3d_mouse_up"]
