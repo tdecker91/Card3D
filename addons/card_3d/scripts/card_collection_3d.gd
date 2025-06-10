@@ -164,53 +164,20 @@ func disable_drop_zone():
 	_preview_drop_index = -1
 	dropzone_collision.disabled = true
 
-
-func on_drag_hover(dragging_card: Card3D, mouse_position: Vector2):
-	var index_to_drop = get_card_index_at_point(mouse_position)
-	preview_card_drop(dragging_card, max(index_to_drop, 0))
-
-
-func get_card_index_at_point(mouse_position: Vector2):
-	var camera = get_window().get_camera_3d()
-	var index = cards.size()
-	
-	var layout_direction = global_transform.basis.x
-	var layout_normal = global_transform.basis.z
-	var card_plane = Plane(layout_normal,  self.global_position)
-	var from = camera.project_ray_origin(mouse_position)
-	var to = from + camera.project_ray_normal(mouse_position) * 1000
-	var intersection = card_plane.intersects_ray(from, to)
-
-	var gizmo = $"../../../Gizmo"
-	gizmo.position = intersection
-	
-	
-	var offset = intersection - self.global_position
-	var distance_along_layout = offset.dot(layout_direction.normalized())
-	print("mouse: " + str(distance_along_layout) + " " + str(mouse_position))
-	
-	# iterate cards until finding screen position after mouse position
-	#   this is the index where we will add card
-	for card in cards:
-		var card_index = card_indicies[card]
-		var card_position = card_layout_strategy.calculate_card_position_by_index(cards.size(), card_index)
-		var card_offset = card_position - self.global_position
-		var card_pos_along_layout = card_offset.dot(layout_direction.normalized())
-		print("card: " + str(card_pos_along_layout) + " : " + str(card))
-			
-	for card in cards:
-		var card_index = card_indicies[card]
-		var card_position_local = card_layout_strategy.calculate_card_position_by_index(cards.size(), card_index)
-		var card_position = global_transform * card_position_local
-		var card_offset = card_position - self.global_position
-		var card_pos_along_layout = card_offset.dot(layout_direction.normalized())
-		if distance_along_layout < card_pos_along_layout:
-			
-			index = card_indicies[card]
-			print(card_indicies)
-			print("index " + str(index))
+"""
+Returns the index at which a card should be inserted based on a projection along the layout direction.
+- global_direction: The normalized direction vector in global space.
+- distance_along_layout: The projected distance along the layout direction.
+"""
+func get_closest_card_index_along_vector(global_direction: Vector3, distance_along_layout: float) -> int:
+	var index := cards.size()
+	for i in range(cards.size()):
+		var card_position_local := card_layout_strategy.calculate_card_position_by_index(cards.size(), i)
+		var card_position_global := self.to_global(card_position_local)
+		var card_projection := card_position_global.dot(global_direction)
+		if distance_along_layout < card_projection:
+			index = i
 			break
-	
 	return index
 
 

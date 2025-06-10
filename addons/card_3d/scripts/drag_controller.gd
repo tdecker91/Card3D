@@ -16,7 +16,6 @@ extends Node3D
 
 signal drag_started(card)
 signal card_moved(card, from_collection, to_collection, from_index, to_index)
-var gizmo: MeshInstance3D
 
 @export var max_drag_y_rotation_deg: int = 65
 @export var max_drag_x_rotation_deg: int = 65
@@ -31,14 +30,14 @@ var _dragging_card: Card3D # card that is being dragged
 var _drag_from_collection: CardCollection3D # collection card being dragged from
 var _dragging: bool = false
 var _hovered_collection: CardCollection3D # collection about to drop card into
+var _hovered_collection_plane: Plane
+var _hovered_collection_layout_direction: Vector3
 var _card_collections: Array[CardCollection3D] = []
 
 
 func _ready():
 	var window = get_window()
 	_camera = window.get_camera_3d()
-	
-	gizmo = $"../../Gizmo"
 	
 	for child in get_children():
 		if child is CardCollection3D:
@@ -63,8 +62,7 @@ func _on_collection_card_selected(card: Card3D, collection: CardCollection3D):
 
 
 func _on_collection_mouse_enter_drop_zone(collection: CardCollection3D):
-	print("hovered over collection" + str(collection))
-	_hovered_collection = collection
+	_set_hovered_collection(collection)
 
 
 func _on_collection_mouse_exit_drop_zone(_collection: CardCollection3D):
@@ -76,10 +74,21 @@ func _on_collection_mouse_exit_drop_zone(_collection: CardCollection3D):
 	_hovered_collection = null
 
 
+"""
+Sets the currently hovered card collection and updates its layout direction and interaction plane.
+"""
+func _set_hovered_collection(collection: CardCollection3D):
+	_hovered_collection = collection
+	var layout_normal_local = collection.card_layout_strategy.get_layout_normal()
+	_hovered_collection_layout_direction = (collection.global_transform.basis * layout_normal_local).normalized()
+	_hovered_collection_plane = Plane(collection.global_transform.basis.z, collection.global_position)
+
+
 func _return_card_to_collection(mouse_position: Vector2):
 	if _drag_from_collection.can_reorder_card(_dragging_card):
+		_set_hovered_collection(_drag_from_collection)
 		var current_index = _drag_from_collection.card_indicies[_dragging_card]
-		var new_index = _drag_from_collection.get_card_index_at_point(mouse_position)
+		var new_index = _get_hovered_collection_index_at_mouse_pos(mouse_position)
 		new_index = clamp(new_index, 0, _drag_from_collection.cards.size() - 1)
 		
 		if current_index != new_index:
@@ -99,7 +108,7 @@ func _drop_card_to_another_collection(mouse_position: Vector2):
 	var c = _drag_from_collection.remove_card(card_index)
 	
 	if _hovered_collection.can_reorder_card(c):
-		var index = _hovered_collection.get_card_index_at_point(mouse_position)
+		var index = _get_hovered_collection_index_at_mouse_pos(mouse_position)
 		_hovered_collection.insert_card(c, index)
 		card_moved.emit(_dragging_card, _drag_from_collection, _hovered_collection, card_index, index)
 	else:
@@ -162,8 +171,6 @@ func _handle_drag_event(_event: InputEventMouseMotion):
 	var position3D = card_drag_plane.intersects_ray(_camera.project_ray_origin(m),_camera.project_ray_normal(m))
 	var card_position = _dragging_card.global_position
 	
-	#gizmo.position = position3D
-	
 	var x_distance = position3D.x - card_position.x
 	var y_distance = position3D.y - card_position.y
 	
@@ -193,11 +200,22 @@ func _handle_drag_event(_event: InputEventMouseMotion):
 	_dragging_card.global_position.z = position3D.z
 	
 	if _hovered_collection != null and position3D != null and _hovered_collection.can_reorder_card(_dragging_card):
-		var drag_screen_point = _get_drag_screen_point(position3D)
-		_hovered_collection.on_drag_hover(_dragging_card, drag_screen_point)
-		
-		# find point on dropzone where mouse intersects
-		_hovered_collection.dropzone_collision
+		var index = _get_hovered_collection_index_at_mouse_pos(m)
+		_hovered_collection.preview_card_drop(_dragging_card, index)
+
+
+"""
+Returns the index in the hovered collection where a card would be inserted based on the mouse position.
+"""
+func _get_hovered_collection_index_at_mouse_pos(mouse_pos: Vector2):
+	var collection_plane_intersection: Vector3 = _hovered_collection_plane.intersects_ray(_camera.project_ray_origin(mouse_pos),_camera.project_ray_normal(mouse_pos))
+	
+	if collection_plane_intersection == null:
+		return _hovered_collection.cards.size()
+	
+	var offset = collection_plane_intersection - _hovered_collection.global_position
+	var distance_along_layout = offset.dot(_hovered_collection_layout_direction)
+	return _hovered_collection.get_closest_card_index_along_vector(_hovered_collection_layout_direction, distance_along_layout)
 
 
 func _get_drag_screen_point(world_position: Vector3):
