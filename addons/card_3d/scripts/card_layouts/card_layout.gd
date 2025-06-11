@@ -38,3 +38,12 @@ func calculate_card_rotations(num_cards: int) -> Array[Vector3]:
 
 func calculate_card_rotation_by_index(_num_cards: int, _index: int) -> Vector3:
 	return Vector3.ZERO
+
+"""
+returns a vector representing the direction of card layout in localspace.
+
+For example, if we layout the cards from left to right incrementing in the
+x direction we should return Vector3.RIGHT
+"""
+func get_layout_normal() -> Vector3:
+	return Vector3.RIGHT
