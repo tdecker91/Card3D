@@ -60,7 +60,10 @@ func instantiate_face_card(rank, suit) -> FaceCard3D:
 	var face_card_3d: FaceCard3D = scene.instantiate()
 
 	var card_data: Dictionary = card_database.get_card_data(rank, suit)
-	face_card_3d.data = card_data
+	face_card_3d.rank = card_data["rank"]
+	face_card_3d.suit = card_data["suit"]
+	face_card_3d.front_material_path = card_data["front_material_path"]
+	face_card_3d.back_material_path = card_data["back_material_path"]
 
 	return face_card_3d
 
