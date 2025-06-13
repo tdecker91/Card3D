@@ -7,12 +7,12 @@ enum FanDirection {
 
 @export var direction: FanDirection = FanDirection.NORMAL
 
-var arc_angle_deg: float = 90.0:
+@export var arc_angle_deg: float = 90.0:
 	set(a):
 		arc_angle_deg = a
 		start_angle = PI/2 + (deg_to_rad(arc_angle_deg) / 2)
 		
-var arc_radius: float = 7.0
+@export var arc_radius: float = 7.0
 
 var start_angle = PI/2 + (deg_to_rad(arc_angle_deg) / 2)
 
