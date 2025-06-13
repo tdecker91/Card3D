@@ -112,9 +112,15 @@ func remove_all() -> Array[Card3D]:
 	var cards_to_return = cards
 	cards = []
 	card_indicies = {}
-	
+
 	for c in cards_to_return:
 		remove_child(c)
+		c.card_3d_mouse_down.disconnect(_on_card_pressed.bind(c))
+		c.card_3d_mouse_up.disconnect(_on_card_clicked.bind(c))
+		c.card_3d_mouse_over.disconnect(_on_card_hover.bind(c))
+		c.card_3d_mouse_exit.disconnect(_on_card_exit.bind(c))
+
+	apply_card_layout()
 	
 	return cards_to_return
 
