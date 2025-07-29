@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://fdx3muhixky4"]
 
-[ext_resource type="Script" path="res://example_battle/scenes/battle.gd" id="1_wmhlq"]
+[ext_resource type="Script" uid="uid://bwet1jv3qfdxg" path="res://example_battle/scenes/battle.gd" id="1_wmhlq"]
 [ext_resource type="PackedScene" uid="uid://d1uvcisduvvj" path="res://addons/card_3d/scenes/card_collection_3d.tscn" id="2_6x4v1"]
-[ext_resource type="Script" path="res://addons/card_3d/scripts/drag_controller.gd" id="2_qm7by"]
-[ext_resource type="Script" path="res://addons/card_3d/scripts/card_layouts/fan_card_layout.gd" id="3_0udwp"]
-[ext_resource type="Script" path="res://example_battle/scripts/play_card_dropzone.gd" id="4_d6qeg"]
+[ext_resource type="Script" uid="uid://bgkontnk0cnl" path="res://addons/card_3d/scripts/drag_controller.gd" id="2_qm7by"]
+[ext_resource type="Script" uid="uid://7sguf1kjbe8s" path="res://addons/card_3d/scripts/card_layouts/fan_card_layout.gd" id="3_0udwp"]
+[ext_resource type="Script" uid="uid://blba82h7r8vut" path="res://example_battle/scripts/play_card_dropzone.gd" id="4_d6qeg"]
 [ext_resource type="PackedScene" uid="uid://4dl436anjvr6" path="res://example_battle/scenes/battle_card_3d.tscn" id="6_lretv"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_jjfpl"]
@@ -15,6 +15,9 @@ albedo_color = Color(0.207843, 0.396078, 0.301961, 1)
 
 [sub_resource type="Resource" id="Resource_eexvo"]
 script = ExtResource("3_0udwp")
+direction = 0
+arc_angle_deg = 90.0
+arc_radius = 7.0
 
 [node name="Battle" type="Node3D"]
 script = ExtResource("1_wmhlq")

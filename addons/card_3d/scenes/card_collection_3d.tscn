@@ -1,9 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://d1uvcisduvvj"]
+[gd_scene load_steps=4 format=3 uid="uid://d1uvcisduvvj"]
 
-[ext_resource type="Script" path="res://addons/card_3d/scripts/card_collection_3d.gd" id="1_0ckh6"]
-
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_bpvrg"]
-points = PackedVector3Array(-7, 2, 0, -7, -2, 0, 7, -2, 0, 7, 2, 0)
+[ext_resource type="Script" uid="uid://bhsbphug3lcqi" path="res://addons/card_3d/scripts/card_collection_3d.gd" id="1_0ckh6"]
+[ext_resource type="Script" uid="uid://jkfm6q5w8u83" path="res://addons/card_3d/scripts/card_collection/drop_zone_editor_tool.gd" id="2_l4h6k"]
+[ext_resource type="Shape3D" uid="uid://cicwtlugivwj4" path="res://addons/card_3d/shapes_3d/default_card_collection_3d_drop_zone_shape_3d.tres" id="2_xh0md"]
 
 [node name="CardCollection3D" type="Node3D"]
 script = ExtResource("1_0ckh6")
@@ -13,8 +12,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.6)
 collision_layer = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DropZone"]
-shape = SubResource("ConvexPolygonShape3D_bpvrg")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.6)
+shape = ExtResource("2_xh0md")
 disabled = true
+
+[node name="DropZoneEditorTool" type="Node" parent="." node_paths=PackedStringArray("_card_collection_3d", "_drop_zone_collision_shape_3d")]
+script = ExtResource("2_l4h6k")
+_card_collection_3d = NodePath("..")
+_drop_zone_collision_shape_3d = NodePath("../DropZone/CollisionShape3D")
 
 [connection signal="mouse_entered" from="DropZone" to="." method="_on_drop_zone_mouse_entered"]
 [connection signal="mouse_exited" from="DropZone" to="." method="_on_drop_zone_mouse_exited"]
