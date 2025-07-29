@@ -22,6 +22,8 @@ signal card_selected(card)
 signal card_clicked(card)
 signal card_added(card)
 
+const _DEFAULT_DROP_ZONE_SHAPE_3D: Shape3D = preload("res://addons/card_3d/shapes_3d/default_card_collection_3d_drop_zone_shape_3d.tres")
+const _DEFAULT_DROP_ZONE_Z_OFFSET: float = 1.6
 
 @onready var dropzone_collision: CollisionShape3D = $DropZone/CollisionShape3D
 
@@ -32,11 +34,10 @@ signal card_added(card)
 	set(strategy):
 		card_layout_strategy = strategy
 		apply_card_layout()
-@export var dropzone_collision_shape: Shape3D = _default_collision_shape(): 
+@export var dropzone_collision_shape: Shape3D = null:
 	set(v):
-		if v != null:
-			$DropZone/CollisionShape3D.shape = v
-@export var dropzone_z_offset: float = 1.6:
+		$DropZone/CollisionShape3D.shape = v if v else _DEFAULT_DROP_ZONE_SHAPE_3D
+@export var dropzone_z_offset: float = _DEFAULT_DROP_ZONE_Z_OFFSET:
 	set(offset):
 		$DropZone.position.z = offset
 
@@ -220,20 +221,6 @@ func _on_drop_zone_mouse_entered():
 func _on_drop_zone_mouse_exited():
 	_preview_drop_index = -1
 	mouse_exit_drop_zone.emit()
-	
-
-func _default_collision_shape() -> Shape3D:
-	var shape = ConvexPolygonShape3D.new()
-	shape.points = PackedVector3Array(
-		[
-			Vector3(-7,2,0),
-			Vector3(-7,-2,0),
-			Vector3(7,-2,0),
-			Vector3(7,2,0)
-		]
-	)
-	return shape
-
 
 # whether or not a card can be selected
 func can_select_card(_card) -> bool:
