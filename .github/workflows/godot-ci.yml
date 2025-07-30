@@ -84,6 +84,7 @@ jobs:
           cd $PROJECT_PATH
           godot --headless --verbose --export-release "cards-web" "$EXPORT_DIR/web/index.html"
       - name: Upload Artifact
+        if: ${{ !env.ACT }}
         uses: actions/upload-artifact@v4
         with:
           name: web
