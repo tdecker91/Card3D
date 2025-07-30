@@ -1,3 +1,5 @@
+class_name Card3D
+extends Node3D
 """
 Card3D
 ==============
@@ -8,8 +10,11 @@ Usage:
 	- extend the card_3d scene and to add your custom card details
 	- extent Card3D class and apply it to your inherited scene
 """
-class_name Card3D
-extends Node3D
+
+signal card_3d_mouse_down()
+signal card_3d_mouse_up()
+signal card_3d_mouse_over()
+signal card_3d_mouse_exit()
 
 
 @export var hover_scale_factor: float = 1.15
@@ -24,12 +29,6 @@ extends Node3D
 		else:
 			$CardMesh.rotation.y = 0
 
-signal card_3d_mouse_down()
-signal card_3d_mouse_up()
-signal card_3d_mouse_over()
-signal card_3d_mouse_exit()
-
-
 var position_tween: Tween
 var rotate_tween: Tween
 var hover_tween: Tween
@@ -37,8 +36,8 @@ var hover_tween: Tween
 
 func disable_collision():
 	$StaticBody3D/CollisionShape3D.disabled = true
-	
-	
+
+
 func enable_collision():
 	$StaticBody3D/CollisionShape3D.disabled = false
 
@@ -46,7 +45,7 @@ func enable_collision():
 func set_hovered():
 	if hover_tween and hover_tween.is_running:
 		hover_tween.kill()
-		
+
 	hover_tween = create_tween()
 	hover_tween.set_parallel(true)
 	hover_tween.set_ease(Tween.EASE_IN)
@@ -57,7 +56,7 @@ func set_hovered():
 func remove_hovered():
 	if hover_tween and hover_tween.is_running:
 		hover_tween.kill()
-		
+
 	hover_tween = create_tween()
 	hover_tween.set_parallel(true)
 	hover_tween.set_ease(Tween.EASE_IN)
@@ -68,7 +67,7 @@ func remove_hovered():
 func dragging_rotation(drag_rotation):
 	if rotate_tween and rotate_tween.is_running:
 		rotate_tween.kill()
-	
+
 	rotate_tween = create_tween()
 	_tween_card_rotation(drag_rotation, rotate_tween_duration)
 
@@ -76,7 +75,7 @@ func dragging_rotation(drag_rotation):
 func animate_to_position(new_position: Vector3, duration = move_tween_duration):
 	if position_tween and position_tween.is_running:
 		position_tween.kill()
-	
+
 	position.z = new_position.z # set z to prevent transition spring from making card go below another card
 	position_tween = create_tween()
 	position_tween.set_ease(Tween.EASE_OUT)

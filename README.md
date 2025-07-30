@@ -33,6 +33,10 @@ import the asset from the Godot asset library into an existing project
 5. Add a script that instantiates `Card3D` nodes and adds them to the collections.
 
 
+## Contributing
+
+See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for guidelines and instructions.
+
 ## Acknowledgements
 
 

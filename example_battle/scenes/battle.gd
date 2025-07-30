@@ -1,9 +1,9 @@
 extends Node3D
 
+var card_database = BattleCards.new()
+
 @onready var monster: BattleCard3D = $Monster
 @onready var play_zone: CardCollection3D = $DragController/PlayZone
-
-var card_database = BattleCards.new()
 
 func _ready():
 	add_card("pikachu")

@@ -29,19 +29,19 @@ var data: Dictionary = _generate_all_face_cards()
 
 func get_card_data(rank: Rank, suit: Suit):
 	var card_id = get_card_id(rank, suit)
-	
+
 	if data.has(card_id):
 		return data[card_id]
-	
+
 	return null
-	
+
 func get_card_id(rank: Rank, suit: Suit) -> String:
 	return str(rank) + " of " + str(suit)
 
 
 func _generate_all_face_cards() -> Dictionary:
-	var _data = {}
-	
+	var data = {}
+
 	for suit in Suit:
 		for rank in Rank:
 			var front_material = "res://example/materials/" + str(suit).to_lower() + "-" + str(Rank[rank]) + ".tres"
@@ -53,6 +53,6 @@ func _generate_all_face_cards() -> Dictionary:
 			"back_material_path": back_material
 			}
 			var card_id = get_card_id(Rank[rank], Suit[suit])
-			_data[card_id] = card_data
-			
-	return _data
+			data[card_id] = card_data
+
+	return data
