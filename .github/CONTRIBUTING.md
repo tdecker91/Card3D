@@ -7,6 +7,7 @@ Contributions are welcome! Please follow these steps to ensure your code meets p
 - **Fork the repository** and create your branch from `main`.
 - **Make your changes** with clear, descriptive commit messages.
 - **Test your changes** locally before submitting a pull request.
+- **Open pull request** with a clear description of your changes. Add relevant screenshots or video if helpful
 
 
 ## Linting GDScript
@@ -26,9 +27,3 @@ gdlint $(find . -name "*.gd")
 - Ensure all code passes linting and formatting checks.
 - Make sure the pipeline passes on GitHub Actions.
 - Add clear documentation and comments to new features.
-
-## Pull Requests
-
-- Open a pull request with a clear description of your changes.
-- Make sure your branch is up to date with `main`.
-- Address any CI or code review feedback.
