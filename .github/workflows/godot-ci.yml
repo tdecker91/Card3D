@@ -48,6 +48,7 @@ jobs:
 
   export-web:
     name: Web Export
+    needs: validate
     runs-on: ubuntu-22.04  # Use 22.04 with godot 4
     container:
       image: barichello/godot-ci:4.4
