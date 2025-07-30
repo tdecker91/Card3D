@@ -44,7 +44,7 @@ func instantiate_face_card(rank, suit) -> FaceCard3D:
 	face_card_3d.suit = card_data["suit"]
 	face_card_3d.front_material_path = card_data["front_material_path"]
 	face_card_3d.back_material_path = card_data["back_material_path"]
-	
+
 	return face_card_3d
 
 
@@ -58,26 +58,26 @@ func add_card():
 func next_card():
 	var suit = suits[suit_index]
 	var rank = ranks[rank_index]
-	
+
 	rank_index += 1
-	
+
 	if rank_index == ranks.size():
 		rank_index = 0
 		suit_index += 1
-	
+
 	if suit_index == suits.size():
 		suit_index = 0
-	
+
 	return {"suit": suit, "rank": rank}
 
 
 func remove_card():
 	if hand.cards.size() == 0:
 		return
-	
+
 	var random_card_index = randi() % hand.cards.size()
 	var card_to_remove = hand.cards[random_card_index]
-	
+
 	play_card(card_to_remove)
 
 
@@ -85,7 +85,7 @@ func play_card(card):
 	var card_index = hand.card_indicies[card]
 	var card_global_position = hand.cards[card_index].global_position
 	var c = hand.remove_card(card_index)
-	
+
 	pile.append_card(c)
 	c.remove_hovered()
 	c.global_position = card_global_position
@@ -94,10 +94,10 @@ func play_card(card):
 func clear_cards():
 	var hand_cards = hand.remove_all()
 	var pile_cards = pile.remove_all()
-	
+
 	for c in hand_cards:
 		c.queue_free()
-	
+
 	for c in pile_cards:
 		c.queue_free()
 

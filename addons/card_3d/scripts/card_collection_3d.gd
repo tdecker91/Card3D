@@ -1,3 +1,5 @@
+class_name CardCollection3D
+extends Node3D
 """
 CardCollection3D
 ==========================
@@ -9,11 +11,9 @@ Usage:
 	- update card layout behavior if desired (line, fan, pile)
 	- update collision shape if desired
 	- add Card3D nodes by calling the add or insert method
-	- extend CardCollection3D in your own script and override drag behavior methods to alter 
+	- extend CardCollection3D in your own script and override drag behavior methods to alter
 		behaviour with your own game logic (can_select_card, can_insert_card, can_reorder_card, can_remove_card)
 """
-class_name CardCollection3D
-extends Node3D
 
 
 signal mouse_enter_drop_zone()
@@ -24,8 +24,6 @@ signal card_added(card)
 
 const _DEFAULT_DROP_ZONE_SHAPE_3D: Shape3D = preload("res://addons/card_3d/shapes_3d/default_card_collection_3d_drop_zone_shape_3d.tres")
 const _DEFAULT_DROP_ZONE_Z_OFFSET: float = 1.6
-
-@onready var dropzone_collision: CollisionShape3D = $DropZone/CollisionShape3D
 
 @export var highlight_on_hover: bool = true
 @export var card_move_tween_duration: float = .25
@@ -41,13 +39,14 @@ const _DEFAULT_DROP_ZONE_Z_OFFSET: float = 1.6
 	set(offset):
 		$DropZone.position.z = offset
 
-
 var cards: Array[Card3D] = []
 var card_indicies = {}
 
 var hover_disabled: bool = false # disable card hover animation (useful when dragging other cards around)
 var _hovered_card: Card3D # card currently hovered
 var _preview_drop_index: int = -1
+
+@onready var dropzone_collision: CollisionShape3D = $DropZone/CollisionShape3D
 
 
 # add a card to the hand and animate it to the correct position
@@ -65,13 +64,13 @@ func insert_card(card: Card3D, index: int):
 	card.card_3d_mouse_up.connect(_on_card_clicked.bind(card))
 	card.card_3d_mouse_over.connect(_on_card_hover.bind(card))
 	card.card_3d_mouse_exit.connect(_on_card_exit.bind(card))
-		
+
 	cards.insert(index, card)
 	add_child(card)
-	
+
 	for i in range(index, cards.size()):
 		card_indicies[cards[i]] = i
-	
+
 	apply_card_layout()
 	card_added.emit(card)
 
@@ -79,7 +78,7 @@ func insert_card(card: Card3D, index: int):
 # remove and return card from the end of the list
 func pop_card() -> Card3D:
 	return remove_card(cards.size() - 1)
-	
+
 
 # remove and return card from the beggining of the list
 func shift_card() -> Card3D:
@@ -93,13 +92,13 @@ func remove_card(index: int) -> Card3D:
 	var removed_card = cards[index]
 	cards.remove_at(index)
 	card_indicies.erase(removed_card)
-	
+
 	for i in range(index, cards.size()):
 		card_indicies[cards[i]] = i
-	
+
 	remove_child(removed_card)
 	apply_card_layout()
-	
+
 	removed_card.card_3d_mouse_down.disconnect(_on_card_pressed.bind(removed_card))
 	removed_card.card_3d_mouse_up.disconnect(_on_card_clicked.bind(removed_card))
 	removed_card.card_3d_mouse_over.disconnect(_on_card_hover.bind(removed_card))
@@ -122,7 +121,7 @@ func remove_all() -> Array[Card3D]:
 		c.card_3d_mouse_exit.disconnect(_on_card_exit.bind(c))
 
 	apply_card_layout()
-	
+
 	return cards_to_return
 
 
@@ -136,17 +135,17 @@ func preview_card_remove(dragging_card: Card3D):
 		var card_index = card_indicies[dragging_card]
 		preview_cards += cards.slice(0, card_index)
 		preview_cards += cards.slice(card_index + 1, cards.size())
-		
+
 		card_layout_strategy.update_card_positions(preview_cards, card_swap_tween_duration)
 
 
 func preview_card_drop(dragging_card: Card3D, index: int):
 	if index == _preview_drop_index:
 		return
-	
+
 	_preview_drop_index = index
 	var preview_cards: Array[Card3D] = []
-	
+
 	if card_indicies.has(dragging_card):
 		# dragging card in the current collection
 		index = clamp(index, 0, cards.size() - 1)
@@ -159,7 +158,7 @@ func preview_card_drop(dragging_card: Card3D, index: int):
 		preview_cards += cards.slice(0, index)
 		preview_cards.append(null)
 		preview_cards += cards.slice(index, cards.size())
-	
+
 	card_layout_strategy.update_card_positions(preview_cards, card_swap_tween_duration)
 
 
@@ -172,11 +171,9 @@ func disable_drop_zone():
 	_preview_drop_index = -1
 	dropzone_collision.disabled = true
 
-"""
-Returns the index at which a card should be inserted based on a projection along the layout direction.
-- global_direction: The normalized direction vector in global space.
-- distance_along_layout: The projected distance along the layout direction.
-"""
+## Returns the index at which a card should be inserted based on a projection along the layout direction.
+## - global_direction: The normalized direction vector in global space.
+## - distance_along_layout: The projected distance along the layout direction.
 func get_closest_card_index_along_vector(global_direction: Vector3, distance_along_layout: float) -> int:
 	var index := cards.size()
 	for i in range(cards.size()):
@@ -194,7 +191,7 @@ func get_closest_card_index_along_vector(global_direction: Vector3, distance_alo
 func _on_card_hover(card: Card3D):
 	if not hover_disabled and can_select_card(card):
 		_hovered_card = card
-		
+
 		if highlight_on_hover:
 			card.set_hovered()
 
@@ -208,7 +205,7 @@ func _on_card_exit(card: Card3D):
 func _on_card_pressed(card: Card3D):
 	if can_select_card(card):
 		card_selected.emit(card)
-		
+
 
 func _on_card_clicked(card: Card3D):
 	card_clicked.emit(card)

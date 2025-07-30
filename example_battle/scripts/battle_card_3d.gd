@@ -6,16 +6,16 @@ extends Card3D
 	set(path):
 		if path:
 			var material = load(path)
-		
+
 			if material:
 				$CardMesh/CardFrontMesh.set_surface_override_material(0, material)
-		
+
 @export var damage: int = 0:
 	set(d):
 		damage = d
 		if damage > 0 and has_node("CardMesh/CardText"):
 			$CardMesh/CardText.text = "Deal " + str(damage) + " damage"
-		
+
 @export var health: int = 0:
 	set(h):
 		health = h

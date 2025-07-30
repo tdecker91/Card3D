@@ -6,7 +6,7 @@ extends Resource
 func update_card_positions(cards: Array[Card3D], duration: float):
 	var positions = calculate_card_positions(cards.size())
 	var rotations = calculate_card_rotations(cards.size())
-	
+
 	for i in range(cards.size()):
 		var card = cards[i]
 		if card != null:
@@ -32,18 +32,18 @@ func calculate_card_rotations(num_cards: int) -> Array[Vector3]:
 	var rotations: Array[Vector3] = []
 	for i in range(num_cards):
 		rotations.append(calculate_card_rotation_by_index(num_cards, i))
-		
+
 	return rotations
 
 
 func calculate_card_rotation_by_index(_num_cards: int, _index: int) -> Vector3:
 	return Vector3.ZERO
 
-"""
-returns a vector representing the direction of card layout in localspace.
 
-For example, if we layout the cards from left to right incrementing in the
-x direction we should return Vector3.RIGHT
-"""
+## returns a vector representing the direction of card layout in localspace.
+##
+## For example, if we layout the cards from left to right incrementing in the
+## x direction we should return Vector3.RIGHT
+
 func get_layout_normal() -> Vector3:
 	return Vector3.RIGHT

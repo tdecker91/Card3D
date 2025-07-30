@@ -23,7 +23,7 @@ func calculate_card_rotations(num_cards: int) -> Array[Vector3]:
 
 	for i in range(num_cards):
 		rotations.append(Vector3.ZERO)
-	
+
 	return rotations
 
 

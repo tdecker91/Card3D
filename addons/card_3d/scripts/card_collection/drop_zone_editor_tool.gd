@@ -1,7 +1,9 @@
 @tool
 extends Node
 
-const _DEFAULT_DROP_ZONE_SHAPE_3D = preload("res://addons/card_3d/shapes_3d/default_card_collection_3d_drop_zone_shape_3d.tres")
+const _DEFAULT_DROP_ZONE_SHAPE_3D = preload(
+	"res://addons/card_3d/shapes_3d/default_card_collection_3d_drop_zone_shape_3d.tres"
+)
 
 @export var _card_collection_3d: CardCollection3D
 @export var _drop_zone_collision_shape_3d: CollisionShape3D
@@ -23,7 +25,7 @@ func _process(_delta: float) -> void:
 		_update_shape_3d()
 	if _current_z_offset != _card_collection_3d.dropzone_z_offset:
 		_update_z_offset()
-		
+
 func _update_shape_3d() -> void:
 	if _card_collection_3d.dropzone_collision_shape:
 		_current_shape_3d = _card_collection_3d.dropzone_collision_shape
