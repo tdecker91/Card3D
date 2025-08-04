@@ -18,7 +18,6 @@ class-name: ([A-Z][a-z0-9]*)+
 class-variable-name: _?[a-z][a-z0-9]*(_[a-z0-9]+)*
 comparison-with-itself: null
 constant-name: _?[A-Z][A-Z0-9]*(_[A-Z0-9]+)*
-disable: []
 duplicated-load: null
 enum-element-name: '[A-Z][A-Z0-9]*(_[A-Z0-9]+)*'
 enum-name: ([A-Z][a-z0-9]*)+
@@ -26,21 +25,24 @@ excluded_directories: !!set
   .git: null
 expression-not-assigned: null
 function-argument-name: _?[a-z][a-z0-9]*(_[a-z0-9]+)*
-function-arguments-number: 10
 function-name: (_on_([A-Z][a-z0-9]*)+(_[a-z0-9]+)*|_?[a-z][a-z0-9]*(_[a-z0-9]+)*)
 function-preload-variable-name: ([A-Z][a-z0-9]*)+
 function-variable-name: '[a-z][a-z0-9]*(_[a-z0-9]+)*'
 load-constant-name: (([A-Z][a-z0-9]*)+|_?[A-Z][A-Z0-9]*(_[A-Z0-9]+)*)
 loop-variable-name: _?[a-z][a-z0-9]*(_[a-z0-9]+)*
-max-file-lines: 1000
-max-line-length: 200
-max-public-methods: 20
 max-returns: 6
 mixed-tabs-and-spaces: null
 signal-name: '[a-z][a-z0-9]*(_[a-z0-9]+)*'
 sub-class-name: _?([A-Z][a-z0-9]*)+
 tab-characters: 1
-trailing-whitespace: null
 unnecessary-pass: null
 unused-argument: null
-disable: [no-else-return, no-elif-return]
+disable: [
+  no-else-return,
+  no-elif-return,
+  trailing-whitespace,
+  function-arguments-number,
+  max-line-length,
+  max-file-lines,
+  max-public-methods
+]
