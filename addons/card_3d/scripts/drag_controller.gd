@@ -40,13 +40,23 @@ var _card_collections: Array[CardCollection3D] = []
 func _ready():
 	var window = get_window()
 	_camera = window.get_camera_3d()
-
+	
 	for child in get_children():
 		if child is CardCollection3D:
-			_card_collections.append(child)
-			child.card_selected.connect(_on_collection_card_selected.bind(child))
-			child.mouse_enter_drop_zone.connect(_on_collection_mouse_enter_drop_zone.bind(child))
-			child.mouse_exit_drop_zone.connect(_on_collection_mouse_exit_drop_zone.bind(child))
+			add_card_collection(child)
+
+func add_card_collection(card_collection: CardCollection3D) -> void:
+	_card_collections.append(card_collection)
+	card_collection.card_selected.connect(_on_collection_card_selected.bind(card_collection))
+	card_collection.mouse_enter_drop_zone.connect(_on_collection_mouse_enter_drop_zone.bind(card_collection))
+	card_collection.mouse_exit_drop_zone.connect(_on_collection_mouse_exit_drop_zone.bind(card_collection))
+
+func remove_card_collection(card_collection: CardCollection3D) -> void:
+	if _card_collections.has(card_collection):
+		_card_collections.erase(card_collection)
+		card_collection.card_selected.disconnect(_on_collection_card_selected.bind(card_collection))
+		card_collection.mouse_enter_drop_zone.disconnect(_on_collection_mouse_enter_drop_zone.bind(card_collection))
+		card_collection.mouse_exit_drop_zone.disconnect(_on_collection_mouse_exit_drop_zone.bind(card_collection))
 
 
 func _input(event):
