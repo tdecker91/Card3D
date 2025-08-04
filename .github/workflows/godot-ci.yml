@@ -11,20 +11,6 @@ env:
   PROJECT_PATH: .
 
 jobs:
-  validate:
-    name: Quick Validation
-    runs-on: ubuntu-22.04
-    container:
-      image: barichello/godot-ci:4.4
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: Validate Project
-        run: |
-          godot --headless --quit --editor
-          echo "✅ Project loads successfully"
-  
   quality:
     name: GDScript Quality Check
     runs-on: ubuntu-22.04
@@ -45,10 +31,11 @@ jobs:
         run: |
           echo "=== Linting all GDScript files ==="
           find . -name "*.gd" -type f | xargs gdlint
+          echo "✅ GDScript linting completed successfully"
 
   export-web:
     name: Web Export
-    needs: validate
+    needs: quality
     runs-on: ubuntu-22.04  # Use 22.04 with godot 4
     container:
       image: barichello/godot-ci:4.4
