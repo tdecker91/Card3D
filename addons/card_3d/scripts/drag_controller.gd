@@ -40,7 +40,7 @@ var _card_collections: Array[CardCollection3D] = []
 func _ready():
 	var window = get_window()
 	_camera = window.get_camera_3d()
-	
+
 	for child in get_children():
 		if child is CardCollection3D:
 			add_card_collection(child)
