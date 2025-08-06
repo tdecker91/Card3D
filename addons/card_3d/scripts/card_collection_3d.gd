@@ -21,6 +21,8 @@ signal mouse_exit_drop_zone()
 signal card_selected(card)
 signal card_clicked(card)
 signal card_added(card)
+signal card_moved(card,from,to)
+
 
 const _DEFAULT_DROP_ZONE_SHAPE_3D: Shape3D = preload("res://addons/card_3d/shapes_3d/default_card_collection_3d_drop_zone_shape_3d.tres")
 const _DEFAULT_DROP_ZONE_Z_OFFSET: float = 1.6
@@ -98,7 +100,7 @@ func remove_card(index: int) -> Card3D:
 
 	remove_child(removed_card)
 	apply_card_layout()
-
+	
 	removed_card.card_3d_mouse_down.disconnect(_on_card_pressed.bind(removed_card))
 	removed_card.card_3d_mouse_up.disconnect(_on_card_clicked.bind(removed_card))
 	removed_card.card_3d_mouse_over.disconnect(_on_card_hover.bind(removed_card))
@@ -124,6 +126,22 @@ func remove_all() -> Array[Card3D]:
 
 	return cards_to_return
 
+
+func move_card(card_to_move: Card3D, new_index: int) -> void:
+	var current_index: int = card_indicies[card_to_move]
+	
+	cards.remove_at(current_index)
+	
+	for i in range(current_index, cards.size()):
+		card_indicies[cards[i]] = i
+
+	cards.insert(new_index, card_to_move)
+
+	for i in range(new_index, cards.size()):
+		card_indicies[cards[i]] = i
+	
+	apply_card_layout()
+	card_moved.emit(card_to_move,current_index,new_index)
 
 func apply_card_layout():
 	card_layout_strategy.update_card_positions(cards, card_move_tween_duration)

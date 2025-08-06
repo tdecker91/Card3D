@@ -103,8 +103,7 @@ func _return_card_to_collection(mouse_position: Vector2):
 		new_index = clamp(new_index, 0, _drag_from_collection.cards.size() - 1)
 
 		if current_index != new_index:
-			_drag_from_collection.remove_card(current_index)
-			_drag_from_collection.insert_card(_dragging_card, new_index)
+			_drag_from_collection.move_card(_dragging_card,new_index)
 			card_moved.emit(_dragging_card, _drag_from_collection, _drag_from_collection, current_index, new_index)
 
 	_drag_from_collection.apply_card_layout()
