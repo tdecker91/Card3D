@@ -40,8 +40,8 @@ func _ready():
 			if num != j - 1:
 				card.face_down = true
 			column.append_card(card)
+		j += 1
 
-	j += 1
 
 	for card in card_deck:
 		deck_collection.append_card(card)
