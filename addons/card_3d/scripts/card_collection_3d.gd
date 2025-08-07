@@ -126,20 +126,17 @@ func remove_all() -> Array[Card3D]:
 
 	return cards_to_return
 
-
 func move_card(card_to_move: Card3D, new_index: int) -> void:
 	var current_index: int = card_indicies[card_to_move]
-	
-	cards.remove_at(current_index)
-	
-	for i in range(current_index, cards.size()):
-		card_indicies[cards[i]] = i
 
+	cards.remove_at(current_index)
 	cards.insert(new_index, card_to_move)
 
-	for i in range(new_index, cards.size()):
+	var from = min(current_index, new_index)
+	var to = max(current_index, new_index) + 1
+	for i in range(from, to):
 		card_indicies[cards[i]] = i
-	
+
 	apply_card_layout()
 	card_moved.emit(card_to_move,current_index,new_index)
 
