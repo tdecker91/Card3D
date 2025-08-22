@@ -21,7 +21,7 @@ It can be configured either by:
 @export var can_insert: bool = true
 
 
-func can_select_card(_card, to_collection: CardCollection3D) -> bool:
+func can_select_card(_card, _to_collection: CardCollection3D) -> bool:
 	return can_select
 
 

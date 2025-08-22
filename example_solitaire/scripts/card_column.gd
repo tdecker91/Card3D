@@ -21,7 +21,7 @@ func can_insert_card(card: FaceCard3D, to_collection, _from_collection) -> bool:
 	return last_card.face_down or (is_opposite_color and is_prior_rank)
 
 
-func can_reorder_card(_card: FaceCard3D, collection: CardCollection3D) -> bool:
+func can_reorder_card(_card: FaceCard3D, _collection: CardCollection3D) -> bool:
 	return false
 
 
