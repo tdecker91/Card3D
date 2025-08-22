@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CardColumnDragStrategy" load_steps=2 format=3 uid="uid://cb1c1q85i4ka2"]
+
+[ext_resource type="Script" uid="uid://c4eh7en1au78a" path="res://example_solitaire/scripts/card_column.gd" id="1_auo7v"]
+
+[resource]
+script = ExtResource("1_auo7v")
+can_select = true
+can_remove = true
+can_reorder = true
+can_insert = true
+metadata/_custom_type_script = "uid://c4eh7en1au78a"

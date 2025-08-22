@@ -35,5 +35,5 @@ func _on_play_zone_card_added(card: BattleCard3D):
 	card.queue_free()
 	monster.health -= card.damage
 	if monster.health <= 0:
-		$DragController/PlayZone.play_enabled = false
+		$DragController/PlayZone.drag_strategy.play_enabled = false
 		monster.queue_free()

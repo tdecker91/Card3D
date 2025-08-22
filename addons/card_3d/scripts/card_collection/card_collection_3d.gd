@@ -34,6 +34,9 @@ const _DEFAULT_DROP_ZONE_Z_OFFSET: float = 1.6
 	set(strategy):
 		card_layout_strategy = strategy
 		apply_card_layout()
+@export var drag_strategy: DragStrategy = DragStrategy.new():
+	set(strategy):
+		drag_strategy = strategy if strategy else DragStrategy.new()
 @export var dropzone_collision_shape: Shape3D = null:
 	set(v):
 		$DropZone/CollisionShape3D.shape = v if v else _DEFAULT_DROP_ZONE_SHAPE_3D
@@ -234,19 +237,18 @@ func _on_drop_zone_mouse_exited():
 	_preview_drop_index = -1
 	mouse_exit_drop_zone.emit()
 
-# whether or not a card can be selected
-func can_select_card(_card) -> bool:
-	return true
+
+func can_select_card(card: Card3D) -> bool:
+	return drag_strategy.can_select_card(card, self)
 
 
-func can_remove_card(_card) -> bool:
-	return true
+func can_remove_card(card: Card3D) -> bool:
+	return drag_strategy.can_remove_card(card, self)
 
 
-func can_reorder_card(_card) -> bool:
-	return true
+func can_reorder_card(card: Card3D) -> bool:
+	return drag_strategy.can_reorder_card(card, self)
 
 
-# if the card can be inserted to the collection
-func can_insert_card(_card, _from_collection) -> bool:
-	return true
+func can_insert_card(card: Card3D, from_collection: CardCollection3D) -> bool:
+	return drag_strategy.can_insert_card(card, self, from_collection)

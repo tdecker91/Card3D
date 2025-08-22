@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SuitDiscard" load_steps=2 format=3 uid="uid://dl7ll3l0opi0a"]
+
+[ext_resource type="Script" uid="uid://crx78y6320odd" path="res://example_solitaire/scripts/suit_discard.gd" id="1_potsm"]
+
+[resource]
+script = ExtResource("1_potsm")
+can_select = false
+can_remove = false
+can_reorder = false
+can_insert = true
+metadata/_custom_type_script = "uid://crx78y6320odd"

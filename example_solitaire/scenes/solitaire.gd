@@ -99,9 +99,6 @@ func _on_drag_controller_card_moved(_card: FaceCard3D, from_collection: CardColl
 	if from_collection == to_collection:
 		return
 
-	if not from_collection is CardColumn or not to_collection is CardColumn:
-		return
-
 	while from_collection.cards.size() > from_index:
 		var new_position = from_collection.cards[from_index].global_position
 		var card = from_collection.remove_card(from_index)

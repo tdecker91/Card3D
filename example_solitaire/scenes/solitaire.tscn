@@ -1,16 +1,16 @@
-[gd_scene load_steps=32 format=3 uid="uid://b3nx7g0iu2cd3"]
+[gd_scene load_steps=29 format=3 uid="uid://b3nx7g0iu2cd3"]
 
 [ext_resource type="Script" uid="uid://btwpxkyhem6kk" path="res://example_solitaire/scenes/solitaire.gd" id="1_vfkpr"]
 [ext_resource type="Script" uid="uid://bgkontnk0cnl" path="res://addons/card_3d/scripts/drag_controller.gd" id="2_evxo0"]
 [ext_resource type="PackedScene" uid="uid://d1uvcisduvvj" path="res://addons/card_3d/scenes/card_collection_3d.tscn" id="3_kmjqy"]
-[ext_resource type="Script" uid="uid://ciacu28a6jpj6" path="res://example_solitaire/scripts/draw_pile.gd" id="4_mvhgr"]
 [ext_resource type="Script" uid="uid://dsyors6p1ph7" path="res://addons/card_3d/scripts/card_layouts/pile_card_layout.gd" id="4_ykggm"]
-[ext_resource type="Script" uid="uid://c4eh7en1au78a" path="res://example_solitaire/scripts/card_column.gd" id="5_j26y4"]
-[ext_resource type="Script" uid="uid://crx78y6320odd" path="res://example_solitaire/scripts/suit_discard.gd" id="5_vnftc"]
 [ext_resource type="Script" uid="uid://cpcw405f10750" path="res://example_solitaire/scripts/stack_layout.gd" id="5_y307u"]
-[ext_resource type="Shape3D" uid="uid://b4ul43sikpt87" path="res://example_solitaire/column_collision.tres" id="8_bfwbd"]
+[ext_resource type="Resource" uid="uid://dl7ll3l0opi0a" path="res://example_solitaire/resources/suit_discard_drag_strategy.tres" id="6_qw2g7"]
+[ext_resource type="Shape3D" uid="uid://b2q35fk3mga4d" path="res://example_solitaire/shapes/discard_collision.tres" id="7_w66lm"]
+[ext_resource type="Resource" uid="uid://cb1c1q85i4ka2" path="res://example_solitaire/resources/card_column_drag_strategy.tres" id="9_qw2g7"]
+[ext_resource type="Shape3D" uid="uid://b4ul43sikpt87" path="res://example_solitaire/shapes/column_collision.tres" id="9_w66lm"]
+[ext_resource type="Script" uid="uid://drpbrbrd8kfxn" path="res://addons/card_3d/scripts/card_collection/drag_strategy.gd" id="9_xhcv4"]
 [ext_resource type="PackedScene" uid="uid://cviptf2wh1pc0" path="res://example_solitaire/scenes/pile_marker.tscn" id="9_xrvyx"]
-[ext_resource type="Script" uid="uid://ctgydx6cirejo" path="res://example_solitaire/scripts/deck.gd" id="10_0hsa4"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_3x48k"]
 size = Vector3(50, 30, 0.1)
@@ -18,72 +18,86 @@ size = Vector3(50, 30, 0.1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6u6h1"]
 albedo_color = Color(0.207843, 0.396078, 0.301961, 1)
 
-[sub_resource type="Resource" id="Resource_vv0ke"]
+[sub_resource type="Resource" id="Resource_6hsbc"]
 script = ExtResource("4_ykggm")
 pile_y_offset = 0.0
+metadata/_custom_type_script = "uid://dsyors6p1ph7"
 
-[sub_resource type="Resource" id="Resource_mnku1"]
+[sub_resource type="Resource" id="Resource_n03b6"]
+script = ExtResource("9_xhcv4")
+can_select = true
+can_remove = true
+can_reorder = false
+can_insert = false
+metadata/_custom_type_script = "uid://drpbrbrd8kfxn"
+
+[sub_resource type="Resource" id="Resource_ifhob"]
 script = ExtResource("4_ykggm")
 pile_y_offset = 0.0
+metadata/_custom_type_script = "uid://dsyors6p1ph7"
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_gk0xa"]
-size = Vector3(3, 4, 0.5)
-
-[sub_resource type="Resource" id="Resource_tcgem"]
+[sub_resource type="Resource" id="Resource_i4hcm"]
 script = ExtResource("4_ykggm")
 pile_y_offset = 0.0
+metadata/_custom_type_script = "uid://dsyors6p1ph7"
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_gmwdc"]
-size = Vector3(3, 4, 0.5)
-
-[sub_resource type="Resource" id="Resource_mqdnk"]
+[sub_resource type="Resource" id="Resource_d026l"]
 script = ExtResource("4_ykggm")
 pile_y_offset = 0.0
+metadata/_custom_type_script = "uid://dsyors6p1ph7"
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_sqpmy"]
-size = Vector3(3, 4, 0.5)
-
-[sub_resource type="Resource" id="Resource_686io"]
+[sub_resource type="Resource" id="Resource_y6eo3"]
 script = ExtResource("4_ykggm")
 pile_y_offset = 0.0
+metadata/_custom_type_script = "uid://dsyors6p1ph7"
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_rescc"]
-size = Vector3(3, 4, 0.5)
-
-[sub_resource type="Resource" id="Resource_pprhl"]
+[sub_resource type="Resource" id="Resource_x8i2t"]
 script = ExtResource("5_y307u")
 distance = 0.8
+metadata/_custom_type_script = "uid://cpcw405f10750"
 
-[sub_resource type="Resource" id="Resource_xa5h1"]
+[sub_resource type="Resource" id="Resource_q5e5c"]
 script = ExtResource("5_y307u")
 distance = 0.8
+metadata/_custom_type_script = "uid://cpcw405f10750"
 
-[sub_resource type="Resource" id="Resource_nx85c"]
+[sub_resource type="Resource" id="Resource_xy1l5"]
 script = ExtResource("5_y307u")
 distance = 0.8
+metadata/_custom_type_script = "uid://cpcw405f10750"
 
-[sub_resource type="Resource" id="Resource_vr3hi"]
+[sub_resource type="Resource" id="Resource_tu0lf"]
 script = ExtResource("5_y307u")
 distance = 0.8
+metadata/_custom_type_script = "uid://cpcw405f10750"
 
-[sub_resource type="Resource" id="Resource_i28x6"]
+[sub_resource type="Resource" id="Resource_eya50"]
 script = ExtResource("5_y307u")
 distance = 0.8
+metadata/_custom_type_script = "uid://cpcw405f10750"
 
-[sub_resource type="Resource" id="Resource_10me3"]
+[sub_resource type="Resource" id="Resource_wxkx0"]
 script = ExtResource("5_y307u")
 distance = 0.8
+metadata/_custom_type_script = "uid://cpcw405f10750"
 
-[sub_resource type="Resource" id="Resource_inowq"]
+[sub_resource type="Resource" id="Resource_mimnj"]
 script = ExtResource("5_y307u")
 distance = 0.8
+metadata/_custom_type_script = "uid://cpcw405f10750"
 
-[sub_resource type="Resource" id="Resource_4ui3d"]
+[sub_resource type="Resource" id="Resource_bpv8x"]
 script = ExtResource("4_ykggm")
 pile_y_offset = 0.0
+metadata/_custom_type_script = "uid://dsyors6p1ph7"
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_iid3l"]
-size = Vector3(2.5, 3.5, 2)
+[sub_resource type="Resource" id="Resource_02cy2"]
+script = ExtResource("9_xhcv4")
+can_select = true
+can_remove = true
+can_reorder = false
+can_insert = false
+metadata/_custom_type_script = "uid://drpbrbrd8kfxn"
 
 [node name="Solitaire" type="Node3D"]
 script = ExtResource("1_vfkpr")
@@ -104,104 +118,103 @@ script = ExtResource("2_evxo0")
 
 [node name="Draw" parent="DragController" instance=ExtResource("3_kmjqy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 7, 0)
-script = ExtResource("4_mvhgr")
 highlight_on_hover = false
-card_layout_strategy = SubResource("Resource_vv0ke")
+card_layout_strategy = SubResource("Resource_6hsbc")
+drag_strategy = SubResource("Resource_n03b6")
 
 [node name="SuitDiscard1" parent="DragController" instance=ExtResource("3_kmjqy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 7, 0)
-script = ExtResource("5_vnftc")
 highlight_on_hover = false
-card_layout_strategy = SubResource("Resource_mnku1")
-dropzone_collision_shape = SubResource("BoxShape3D_gk0xa")
+card_layout_strategy = SubResource("Resource_ifhob")
+drag_strategy = ExtResource("6_qw2g7")
+dropzone_collision_shape = ExtResource("7_w66lm")
 dropzone_z_offset = 0.0
 
 [node name="SuitDiscard2" parent="DragController" instance=ExtResource("3_kmjqy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 7, 0)
-script = ExtResource("5_vnftc")
 highlight_on_hover = false
-card_layout_strategy = SubResource("Resource_tcgem")
-dropzone_collision_shape = SubResource("BoxShape3D_gmwdc")
+card_layout_strategy = SubResource("Resource_i4hcm")
+drag_strategy = ExtResource("6_qw2g7")
+dropzone_collision_shape = ExtResource("7_w66lm")
 dropzone_z_offset = 0.0
 
 [node name="SuitDiscard3" parent="DragController" instance=ExtResource("3_kmjqy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 7, 0)
-script = ExtResource("5_vnftc")
 highlight_on_hover = false
-card_layout_strategy = SubResource("Resource_mqdnk")
-dropzone_collision_shape = SubResource("BoxShape3D_sqpmy")
+card_layout_strategy = SubResource("Resource_d026l")
+drag_strategy = ExtResource("6_qw2g7")
+dropzone_collision_shape = ExtResource("7_w66lm")
 dropzone_z_offset = 0.0
 
 [node name="SuitDiscard4" parent="DragController" instance=ExtResource("3_kmjqy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 7, 0)
-script = ExtResource("5_vnftc")
 highlight_on_hover = false
-card_layout_strategy = SubResource("Resource_686io")
-dropzone_collision_shape = SubResource("BoxShape3D_rescc")
+card_layout_strategy = SubResource("Resource_y6eo3")
+drag_strategy = ExtResource("6_qw2g7")
+dropzone_collision_shape = ExtResource("7_w66lm")
 dropzone_z_offset = 0.0
 
 [node name="Column1" parent="DragController" instance=ExtResource("3_kmjqy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0)
-script = ExtResource("5_j26y4")
 highlight_on_hover = false
-card_layout_strategy = SubResource("Resource_pprhl")
-dropzone_collision_shape = ExtResource("8_bfwbd")
+card_layout_strategy = SubResource("Resource_x8i2t")
+drag_strategy = ExtResource("9_qw2g7")
+dropzone_collision_shape = ExtResource("9_w66lm")
 dropzone_z_offset = 0.0
 
 [node name="Column2" parent="DragController" instance=ExtResource("3_kmjqy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 0)
-script = ExtResource("5_j26y4")
 highlight_on_hover = false
-card_layout_strategy = SubResource("Resource_xa5h1")
-dropzone_collision_shape = ExtResource("8_bfwbd")
+card_layout_strategy = SubResource("Resource_q5e5c")
+drag_strategy = ExtResource("9_qw2g7")
+dropzone_collision_shape = ExtResource("9_w66lm")
 dropzone_z_offset = 0.0
 
 [node name="Column3" parent="DragController" instance=ExtResource("3_kmjqy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, 0)
-script = ExtResource("5_j26y4")
 highlight_on_hover = false
-card_layout_strategy = SubResource("Resource_nx85c")
-dropzone_collision_shape = ExtResource("8_bfwbd")
+card_layout_strategy = SubResource("Resource_xy1l5")
+drag_strategy = ExtResource("9_qw2g7")
+dropzone_collision_shape = ExtResource("9_w66lm")
 dropzone_z_offset = 0.0
 
 [node name="Column4" parent="DragController" instance=ExtResource("3_kmjqy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
-script = ExtResource("5_j26y4")
 highlight_on_hover = false
-card_layout_strategy = SubResource("Resource_vr3hi")
-dropzone_collision_shape = ExtResource("8_bfwbd")
+card_layout_strategy = SubResource("Resource_tu0lf")
+drag_strategy = ExtResource("9_qw2g7")
+dropzone_collision_shape = ExtResource("9_w66lm")
 dropzone_z_offset = 0.0
 
 [node name="Column5" parent="DragController" instance=ExtResource("3_kmjqy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
-script = ExtResource("5_j26y4")
 highlight_on_hover = false
-card_layout_strategy = SubResource("Resource_i28x6")
-dropzone_collision_shape = ExtResource("8_bfwbd")
+card_layout_strategy = SubResource("Resource_eya50")
+drag_strategy = ExtResource("9_qw2g7")
+dropzone_collision_shape = ExtResource("9_w66lm")
 dropzone_z_offset = 0.0
 
 [node name="Column6" parent="DragController" instance=ExtResource("3_kmjqy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
-script = ExtResource("5_j26y4")
 highlight_on_hover = false
-card_layout_strategy = SubResource("Resource_10me3")
-dropzone_collision_shape = ExtResource("8_bfwbd")
+card_layout_strategy = SubResource("Resource_wxkx0")
+drag_strategy = ExtResource("9_qw2g7")
+dropzone_collision_shape = ExtResource("9_w66lm")
 dropzone_z_offset = 0.0
 
 [node name="Column7" parent="DragController" instance=ExtResource("3_kmjqy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 0)
-script = ExtResource("5_j26y4")
 highlight_on_hover = false
-card_layout_strategy = SubResource("Resource_inowq")
-dropzone_collision_shape = ExtResource("8_bfwbd")
+card_layout_strategy = SubResource("Resource_mimnj")
+drag_strategy = ExtResource("9_qw2g7")
+dropzone_collision_shape = ExtResource("9_w66lm")
 dropzone_z_offset = 0.0
 
 [node name="Deck" parent="." instance=ExtResource("3_kmjqy")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -15, 7, 0)
-script = ExtResource("10_0hsa4")
 highlight_on_hover = false
-card_layout_strategy = SubResource("Resource_4ui3d")
-dropzone_collision_shape = SubResource("BoxShape3D_iid3l")
+card_layout_strategy = SubResource("Resource_bpv8x")
+drag_strategy = SubResource("Resource_02cy2")
 
 [node name="EmptyDeck" parent="." instance=ExtResource("9_xrvyx")]
 visible = false
