@@ -238,17 +238,17 @@ func _on_drop_zone_mouse_exited():
 	mouse_exit_drop_zone.emit()
 
 
-func can_select_card(card) -> bool:
+func can_select_card(card: Card3D) -> bool:
 	return drag_strategy.can_select_card(card, self)
 
 
-func can_remove_card(card) -> bool:
+func can_remove_card(card: Card3D) -> bool:
 	return drag_strategy.can_remove_card(card, self)
 
 
-func can_reorder_card(card) -> bool:
+func can_reorder_card(card: Card3D) -> bool:
 	return drag_strategy.can_reorder_card(card, self)
 
 
-func can_insert_card(card, from_collection) -> bool:
+func can_insert_card(card: Card3D, from_collection: CardCollection3D) -> bool:
 	return drag_strategy.can_insert_card(card, self, from_collection)

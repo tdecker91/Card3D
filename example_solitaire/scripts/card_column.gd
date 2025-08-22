@@ -1,7 +1,11 @@
 class_name CardColumnDragStrategy
 extends DragStrategy
 
-func can_insert_card(card: FaceCard3D, to_collection, _from_collection) -> bool:
+func can_insert_card(
+	card: FaceCard3D,
+	to_collection: CardCollection3D,
+	_from_collection: CardCollection3D
+	) -> bool:
 	var cards = to_collection.cards
 	
 	if cards.size() == 0:

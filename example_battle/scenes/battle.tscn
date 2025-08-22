@@ -14,11 +14,12 @@ size = Vector2(50, 50)
 albedo_color = Color(0.207843, 0.396078, 0.301961, 1)
 
 [sub_resource type="Resource" id="Resource_q3f0o"]
+resource_name = "PlayZoneDragStrategy"
 script = ExtResource("4_d6qeg")
 play_enabled = true
 can_select = true
-can_remove = true
-can_reorder = true
+can_remove = false
+can_reorder = false
 can_insert = true
 metadata/_custom_type_script = "uid://blba82h7r8vut"
 

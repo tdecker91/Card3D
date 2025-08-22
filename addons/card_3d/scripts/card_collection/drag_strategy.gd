@@ -6,11 +6,11 @@ DragStrategy
 
 This module defines an interface that describes how cards can drag from different collections.
 It can be configured either by:
-	1. setting the drag stragegy on your collection to "NewDragStrategy" via the resource menu in 
-		node the inspector and changing the default boolean values
-	2. creating a custom script that extends DragStrategy and overriding 
-		(can_select_card, can_remove_card, can_reorder_card, can_insert_card)
-		to describe checks conditional to the card and collection
+	1. Setting the drag strategy on your collection to a new DragStrategy resource via the Inspector
+	   (Add Resource → DragStrategy) and configuring the default boolean values.
+	2. Creating a custom script that extends DragStrategy and overriding the hooks
+	   (can_select_card, can_remove_card, can_reorder_card, can_insert_card)
+	   to implement checks based on the card and collection.
 """
 
 
