@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://fdx3muhixky4"]
+[gd_scene load_steps=11 format=3 uid="uid://fdx3muhixky4"]
 
 [ext_resource type="Script" uid="uid://bwet1jv3qfdxg" path="res://example_battle/scenes/battle.gd" id="1_wmhlq"]
 [ext_resource type="PackedScene" uid="uid://d1uvcisduvvj" path="res://addons/card_3d/scenes/card_collection_3d.tscn" id="2_6x4v1"]
@@ -12,6 +12,15 @@ size = Vector2(50, 50)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s1erc"]
 albedo_color = Color(0.207843, 0.396078, 0.301961, 1)
+
+[sub_resource type="Resource" id="Resource_q3f0o"]
+script = ExtResource("4_d6qeg")
+play_enabled = true
+can_select = true
+can_remove = true
+can_reorder = true
+can_insert = true
+metadata/_custom_type_script = "uid://blba82h7r8vut"
 
 [sub_resource type="Resource" id="Resource_eexvo"]
 script = ExtResource("3_0udwp")
@@ -43,9 +52,7 @@ card_drag_plane = Plane(0, 0, 1, 4)
 
 [node name="PlayZone" parent="DragController" instance=ExtResource("2_6x4v1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.309844)
-script = ExtResource("4_d6qeg")
-play_enabled = true
-highlight_on_hover = false
+drag_strategy = SubResource("Resource_q3f0o")
 
 [node name="CardCollection3D" parent="DragController" instance=ExtResource("2_6x4v1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.39072, 0)
