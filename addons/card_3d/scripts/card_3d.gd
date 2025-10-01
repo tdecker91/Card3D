@@ -33,13 +33,15 @@ signal card_3d_mouse_exit()
 ## this card is considered a click rather than a selection.
 @export_range(0.05,1.0,0.05,"suffix:s") var click_threshold_duration: float = 0.15
 
-@onready var _click_threshold_timer: Timer = $ClickThresholdTimer
 
 var position_tween: Tween
 var rotate_tween: Tween
 var hover_tween: Tween
 
 var _is_within_click_threshold: bool
+
+@onready var _click_threshold_timer: Timer = $ClickThresholdTimer
+
 
 func disable_collision():
 	$StaticBody3D/CollisionShape3D.disabled = true

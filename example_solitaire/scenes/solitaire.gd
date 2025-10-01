@@ -67,7 +67,7 @@ func instantiate_face_card(rank, suit) -> FaceCard3D:
 	return face_card_3d
 
 
-func _on_deck_card_clicked(card: Variant) -> void:
+func _on_deck_card_clicked(_card: Variant) -> void:
 	var cards = deck_collection.cards
 	var card_global_position = cards[cards.size() - 1].global_position
 	var drawn_card = deck_collection.remove_card(cards.size() - 1)
