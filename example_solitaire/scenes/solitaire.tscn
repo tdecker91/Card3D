@@ -20,81 +20,64 @@ albedo_color = Color(0.207843, 0.396078, 0.301961, 1)
 
 [sub_resource type="Resource" id="Resource_6hsbc"]
 script = ExtResource("4_ykggm")
-pile_y_offset = 0.0
 metadata/_custom_type_script = "uid://dsyors6p1ph7"
 
 [sub_resource type="Resource" id="Resource_n03b6"]
 script = ExtResource("9_xhcv4")
-can_select = true
-can_remove = true
 can_reorder = false
 can_insert = false
 metadata/_custom_type_script = "uid://drpbrbrd8kfxn"
 
 [sub_resource type="Resource" id="Resource_ifhob"]
 script = ExtResource("4_ykggm")
-pile_y_offset = 0.0
 metadata/_custom_type_script = "uid://dsyors6p1ph7"
 
 [sub_resource type="Resource" id="Resource_i4hcm"]
 script = ExtResource("4_ykggm")
-pile_y_offset = 0.0
 metadata/_custom_type_script = "uid://dsyors6p1ph7"
 
 [sub_resource type="Resource" id="Resource_d026l"]
 script = ExtResource("4_ykggm")
-pile_y_offset = 0.0
 metadata/_custom_type_script = "uid://dsyors6p1ph7"
 
 [sub_resource type="Resource" id="Resource_y6eo3"]
 script = ExtResource("4_ykggm")
-pile_y_offset = 0.0
 metadata/_custom_type_script = "uid://dsyors6p1ph7"
 
 [sub_resource type="Resource" id="Resource_x8i2t"]
 script = ExtResource("5_y307u")
-distance = 0.8
 metadata/_custom_type_script = "uid://cpcw405f10750"
 
 [sub_resource type="Resource" id="Resource_q5e5c"]
 script = ExtResource("5_y307u")
-distance = 0.8
 metadata/_custom_type_script = "uid://cpcw405f10750"
 
 [sub_resource type="Resource" id="Resource_xy1l5"]
 script = ExtResource("5_y307u")
-distance = 0.8
 metadata/_custom_type_script = "uid://cpcw405f10750"
 
 [sub_resource type="Resource" id="Resource_tu0lf"]
 script = ExtResource("5_y307u")
-distance = 0.8
 metadata/_custom_type_script = "uid://cpcw405f10750"
 
 [sub_resource type="Resource" id="Resource_eya50"]
 script = ExtResource("5_y307u")
-distance = 0.8
 metadata/_custom_type_script = "uid://cpcw405f10750"
 
 [sub_resource type="Resource" id="Resource_wxkx0"]
 script = ExtResource("5_y307u")
-distance = 0.8
 metadata/_custom_type_script = "uid://cpcw405f10750"
 
 [sub_resource type="Resource" id="Resource_mimnj"]
 script = ExtResource("5_y307u")
-distance = 0.8
 metadata/_custom_type_script = "uid://cpcw405f10750"
 
 [sub_resource type="Resource" id="Resource_bpv8x"]
 script = ExtResource("4_ykggm")
-pile_y_offset = 0.0
 metadata/_custom_type_script = "uid://dsyors6p1ph7"
 
 [sub_resource type="Resource" id="Resource_02cy2"]
 script = ExtResource("9_xhcv4")
-can_select = true
-can_remove = true
 can_reorder = false
 can_insert = false
 metadata/_custom_type_script = "uid://drpbrbrd8kfxn"
@@ -232,5 +215,5 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 5, 7, 
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 9, 7, -0.5)
 
 [connection signal="card_moved" from="DragController" to="." method="_on_drag_controller_card_moved"]
-[connection signal="card_selected" from="Deck" to="." method="_on_deck_card_selected"]
+[connection signal="card_clicked" from="Deck" to="." method="_on_deck_card_clicked"]
 [connection signal="on_click" from="EmptyDeck" to="." method="_on_empty_deck_on_click"]

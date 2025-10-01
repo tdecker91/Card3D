@@ -102,5 +102,5 @@ func clear_cards():
 		c.queue_free()
 
 
-func _on_face_card_3d_card_3d_mouse_up():
+func _on_deck_card_3d_clicked() -> void:
 	add_card()

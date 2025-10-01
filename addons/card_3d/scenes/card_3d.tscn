@@ -32,6 +32,11 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_21kd5")
 
+[node name="ClickThresholdTimer" type="Timer" parent="."]
+wait_time = 0.15
+one_shot = true
+
 [connection signal="input_event" from="StaticBody3D" to="." method="_on_static_body_3d_input_event"]
 [connection signal="mouse_entered" from="StaticBody3D" to="." method="_on_static_body_3d_mouse_entered"]
 [connection signal="mouse_exited" from="StaticBody3D" to="." method="_on_static_body_3d_mouse_exited"]
+[connection signal="timeout" from="ClickThresholdTimer" to="." method="_on_click_threshold_timer_timeout"]

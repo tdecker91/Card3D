@@ -13,6 +13,7 @@ Usage:
 
 signal card_3d_mouse_down()
 signal card_3d_mouse_up()
+signal card_3d_clicked()
 signal card_3d_mouse_over()
 signal card_3d_mouse_exit()
 
@@ -28,11 +29,17 @@ signal card_3d_mouse_exit()
 			$CardMesh.rotation.y = PI
 		else:
 			$CardMesh.rotation.y = 0
+## The amount of time in seconds on which pressing and releasing
+## this card is considered a click rather than a selection.
+@export_range(0.05,1.0,0.05,"suffix:s") var click_threshold_duration: float = 0.15
+
+@onready var _click_threshold_timer: Timer = $ClickThresholdTimer
 
 var position_tween: Tween
 var rotate_tween: Tween
 var hover_tween: Tween
 
+var _is_within_click_threshold: bool
 
 func disable_collision():
 	$StaticBody3D/CollisionShape3D.disabled = true
@@ -115,6 +122,22 @@ func _on_static_body_3d_input_event(_camera, event, _event_position, _normal, _s
 		var button = event.button_index
 		var pressed = event.pressed
 		if button == 1 and pressed == true:
-			card_3d_mouse_down.emit()
+			_start_click_threshold_timer()
 		elif button == 1 and pressed == false:
-			card_3d_mouse_up.emit()
+			if _is_within_click_threshold:
+				_stop_click_threshold_timer()
+				card_3d_clicked.emit()
+			else:
+				card_3d_mouse_up.emit()
+
+func _start_click_threshold_timer() -> void:
+	_click_threshold_timer.start(click_threshold_duration)
+	_is_within_click_threshold = true
+	
+func _stop_click_threshold_timer() -> void:
+	_click_threshold_timer.stop()
+	_is_within_click_threshold = false
+
+func _on_click_threshold_timer_timeout() -> void:
+	_stop_click_threshold_timer()
+	card_3d_mouse_down.emit()
