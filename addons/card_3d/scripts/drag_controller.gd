@@ -60,7 +60,6 @@ func _ready():
 func add_card_collection(card_collection: CardCollection3D) -> void:
 	_card_collections.append(card_collection)
 	card_collection.card_selected.connect(_on_collection_card_selected.bind(card_collection))
-	card_collection.card_deselected.connect(_on_collection_card_deselected.bind(card_collection))
 	card_collection.mouse_enter_drop_zone.connect(_on_collection_mouse_enter_drop_zone.bind(card_collection))
 	card_collection.mouse_exit_drop_zone.connect(_on_collection_mouse_exit_drop_zone.bind(card_collection))
 
@@ -68,12 +67,14 @@ func remove_card_collection(card_collection: CardCollection3D) -> void:
 	if _card_collections.has(card_collection):
 		_card_collections.erase(card_collection)
 		card_collection.card_selected.disconnect(_on_collection_card_selected.bind(card_collection))
-		card_collection.card_deselected.disconnect(_on_collection_card_deselected.bind(card_collection))
 		card_collection.mouse_enter_drop_zone.disconnect(_on_collection_mouse_enter_drop_zone.bind(card_collection))
 		card_collection.mouse_exit_drop_zone.disconnect(_on_collection_mouse_exit_drop_zone.bind(card_collection))
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.is_released() and event.button_index == 1:
+			_on_collection_card_deselected()
 	if event is InputEventMouseMotion:
 		_current_mouse_position = get_viewport().get_mouse_position()
 		if _dragging:
@@ -91,10 +92,7 @@ func _on_collection_card_selected(card: Card3D, collection: CardCollection3D):
 	for card_collection in _card_collections:
 		card_collection.hover_disabled = true
 	
-func _on_collection_card_deselected(card: Card3D, _collection: CardCollection3D):
-	if _dragging_card != card:
-		return
-
+func _on_collection_card_deselected():
 	if _dragging:
 		_stop_drag()
 	else:
