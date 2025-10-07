@@ -16,6 +16,7 @@ Usage:
 
 
 signal drag_started(card)
+signal drag_stopped(card)
 signal card_moved(card, from_collection, to_collection, from_index, to_index)
 
 
@@ -181,6 +182,7 @@ func _stop_drag(mouse_position: Vector2):
 		collection.disable_drop_zone()
 		collection.hover_disabled = false
 
+	drag_stopped.emit(card)
 
 func _handle_drag_event(_event: InputEventMouseMotion):
 	var m: Vector2 = get_viewport().get_mouse_position()
