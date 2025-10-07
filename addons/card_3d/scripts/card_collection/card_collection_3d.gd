@@ -19,7 +19,7 @@ Usage:
 signal mouse_enter_drop_zone()
 signal mouse_exit_drop_zone()
 signal card_selected(card)
-signal card_clicked(card)
+signal card_deselected(card)
 signal card_added(card)
 signal card_moved(card,from,to)
 
@@ -66,7 +66,7 @@ func prepend_card(card: Card3D):
 
 func insert_card(card: Card3D, index: int):
 	card.card_3d_mouse_down.connect(_on_card_pressed.bind(card))
-	card.card_3d_mouse_up.connect(_on_card_clicked.bind(card))
+	card.card_3d_mouse_up.connect(_on_card_deselected.bind(card))
 	card.card_3d_mouse_over.connect(_on_card_hover.bind(card))
 	card.card_3d_mouse_exit.connect(_on_card_exit.bind(card))
 
@@ -105,7 +105,7 @@ func remove_card(index: int) -> Card3D:
 	apply_card_layout()
 	
 	removed_card.card_3d_mouse_down.disconnect(_on_card_pressed.bind(removed_card))
-	removed_card.card_3d_mouse_up.disconnect(_on_card_clicked.bind(removed_card))
+	removed_card.card_3d_mouse_up.disconnect(_on_card_deselected.bind(removed_card))
 	removed_card.card_3d_mouse_over.disconnect(_on_card_hover.bind(removed_card))
 	removed_card.card_3d_mouse_exit.disconnect(_on_card_exit.bind(removed_card))
 
@@ -121,7 +121,7 @@ func remove_all() -> Array[Card3D]:
 	for c in cards_to_return:
 		remove_child(c)
 		c.card_3d_mouse_down.disconnect(_on_card_pressed.bind(c))
-		c.card_3d_mouse_up.disconnect(_on_card_clicked.bind(c))
+		c.card_3d_mouse_up.disconnect(_on_card_deselected.bind(c))
 		c.card_3d_mouse_over.disconnect(_on_card_hover.bind(c))
 		c.card_3d_mouse_exit.disconnect(_on_card_exit.bind(c))
 
@@ -225,8 +225,8 @@ func _on_card_pressed(card: Card3D):
 		card_selected.emit(card)
 
 
-func _on_card_clicked(card: Card3D):
-	card_clicked.emit(card)
+func _on_card_deselected(card: Card3D):
+	card_deselected.emit(card)
 
 
 func _on_drop_zone_mouse_entered():
