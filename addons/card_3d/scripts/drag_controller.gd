@@ -28,24 +28,22 @@ signal card_moved(card, from_collection, to_collection, from_index, to_index)
 		card_drag_plane = plane
 
 ## The minimum distance the mouse needs to travel in viewport coordinates to consider the input a drag.
-@export_range(1,100.0,1,"suffix:px")  var card_drag_threshold: float = 10.0:
+@export_range(0,100.0,1,"suffix:px")  var card_drag_threshold: float = 0.0:
 	set(value):
-		_set_card_drag_threshold_squared(value)
+		_card_drag_threshold_squared = value*value
+		card_drag_threshold = value
 
 var _camera: Camera3D # camera used for determining where mouse is on drag plane
 var _dragging_card: Card3D # card that is being dragged
 var _drag_from_collection: CardCollection3D # collection card being dragged from
 var _dragging: bool = false
-var _card_drag_threshold_squared: float
+var _card_drag_threshold_squared: float = card_drag_threshold*card_drag_threshold
 var _selection_start_mouse_position: Vector2
 var _current_mouse_position: Vector2
 var _hovered_collection: CardCollection3D # collection about to drop card into
 var _hovered_collection_plane: Plane
 var _hovered_collection_layout_direction: Vector3
 var _card_collections: Array[CardCollection3D] = []
-
-func _set_card_drag_threshold_squared(threshold_value: float) -> void:
-	_card_drag_threshold_squared = threshold_value*threshold_value
 
 func _ready():
 	var window = get_window()
@@ -54,8 +52,6 @@ func _ready():
 	for child in get_children():
 		if child is CardCollection3D:
 			add_card_collection(child)
-			
-	_set_card_drag_threshold_squared(card_drag_threshold)
 
 func add_card_collection(card_collection: CardCollection3D) -> void:
 	_card_collections.append(card_collection)
