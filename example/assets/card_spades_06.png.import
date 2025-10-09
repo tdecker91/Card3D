@@ -3,16 +3,16 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c6vtcbt6oh248"
-path.etc2="res://.godot/imported/card_spades_06.png-8fd2e99a366c814ad339cc4764977d45.etc2.ctex"
+path.s3tc="res://.godot/imported/card_spades_06.png-8fd2e99a366c814ad339cc4764977d45.s3tc.ctex"
 metadata={
-"imported_formats": ["etc2_astc"],
+"imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://example/assets/card_spades_06.png"
-dest_files=["res://.godot/imported/card_spades_06.png-8fd2e99a366c814ad339cc4764977d45.etc2.ctex"]
+dest_files=["res://.godot/imported/card_spades_06.png-8fd2e99a366c814ad339cc4764977d45.s3tc.ctex"]
 
 [params]
 

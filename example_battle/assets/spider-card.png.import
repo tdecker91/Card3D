@@ -3,16 +3,16 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://btgseoqt70cdo"
-path.etc2="res://.godot/imported/spider-card.png-e245748ade7b1013cb01d2c125a9767a.etc2.ctex"
+path.s3tc="res://.godot/imported/spider-card.png-e245748ade7b1013cb01d2c125a9767a.s3tc.ctex"
 metadata={
-"imported_formats": ["etc2_astc"],
+"imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://example_battle/assets/spider-card.png"
-dest_files=["res://.godot/imported/spider-card.png-e245748ade7b1013cb01d2c125a9767a.etc2.ctex"]
+dest_files=["res://.godot/imported/spider-card.png-e245748ade7b1013cb01d2c125a9767a.s3tc.ctex"]
 
 [params]
 
