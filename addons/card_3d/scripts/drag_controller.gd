@@ -120,6 +120,7 @@ func _set_hovered_collection(collection: CardCollection3D):
 
 
 func _return_card_to_collection(mouse_position: Vector2):
+	_drag_from_collection.is_dragging_card = true
 	if _drag_from_collection.can_reorder_card(_dragging_card):
 		_set_hovered_collection(_drag_from_collection)
 		var current_index = _drag_from_collection.card_indicies[_dragging_card]
@@ -141,6 +142,7 @@ func _drop_card_to_another_collection(mouse_position: Vector2):
 	var card_global_position = _drag_from_collection.cards[card_index].global_position
 	var c = _drag_from_collection.remove_card(card_index)
 
+	_hovered_collection.is_dragging_card = true
 	if _hovered_collection.can_reorder_card(c):
 		var index = _get_hovered_collection_index_at_mouse_pos(mouse_position)
 		_hovered_collection.insert_card(c, index)
@@ -154,7 +156,7 @@ func _drop_card_to_another_collection(mouse_position: Vector2):
 			card_index,
 			_hovered_collection.cards.size() - 1
 		)
-
+	
 	c.remove_hovered()
 	c.global_position = card_global_position
 
@@ -163,7 +165,6 @@ func _drag_card_start():
 	_dragging = true
 	_dragging_card.disable_collision()
 	_dragging_card.remove_hovered()
-	_drag_from_collection.is_dragging_card = true
 	_drag_from_collection.enable_drop_zone()
 
 	for collection in _card_collections:

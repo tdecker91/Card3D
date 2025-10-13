@@ -55,7 +55,6 @@ var _preview_drop_index: int = -1
 
 @onready var dropzone_collision: CollisionShape3D = $DropZone/CollisionShape3D
 
-
 # add a card to the hand and animate it to the correct position
 # this will add card as child of this node
 func append_card(card: Card3D):
