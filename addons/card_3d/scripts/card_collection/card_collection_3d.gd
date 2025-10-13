@@ -20,6 +20,7 @@ signal mouse_enter_drop_zone()
 signal mouse_exit_drop_zone()
 signal card_selected(card)
 signal card_deselected(card)
+signal card_clicked(card)
 signal card_added(card)
 signal card_moved(card,from,to)
 
@@ -46,6 +47,7 @@ const _DEFAULT_DROP_ZONE_Z_OFFSET: float = 1.6
 
 var cards: Array[Card3D] = []
 var card_indicies = {}
+var is_dragging_card: bool = false
 
 var hover_disabled: bool = false # disable card hover animation (useful when dragging other cards around)
 var _hovered_card: Card3D # card currently hovered
@@ -222,10 +224,14 @@ func _on_card_exit(card: Card3D):
 
 func _on_card_pressed(card: Card3D):
 	if can_select_card(card):
+		is_dragging_card = false
 		card_selected.emit(card)
 
 
 func _on_card_deselected(card: Card3D):
+	if !is_dragging_card:
+		card_clicked.emit(card)
+	is_dragging_card = false
 	card_deselected.emit(card)
 
 

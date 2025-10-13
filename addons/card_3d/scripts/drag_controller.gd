@@ -163,6 +163,7 @@ func _drag_card_start():
 	_dragging = true
 	_dragging_card.disable_collision()
 	_dragging_card.remove_hovered()
+	_drag_from_collection.is_dragging_card = true
 	_drag_from_collection.enable_drop_zone()
 
 	for collection in _card_collections:

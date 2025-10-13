@@ -90,6 +90,15 @@ func play_card(card):
 	c.remove_hovered()
 	c.global_position = card_global_position
 
+func retrieve_card_from_table(card):
+	var card_index = pile.card_indicies[card]
+	var card_global_position = pile.cards[card_index].global_position
+	var c = pile.remove_card(card_index)
+
+	hand.append_card(c)
+	c.remove_hovered()
+	c.global_position = card_global_position
+
 
 func clear_cards():
 	var hand_cards = hand.remove_all()
@@ -104,3 +113,11 @@ func clear_cards():
 
 func _on_face_card_3d_card_3d_mouse_up():
 	add_card()
+
+
+func _on_hand_card_clicked(card: Variant) -> void:
+	play_card(card)
+
+
+func _on_table_cards_card_clicked(card: Variant) -> void:
+	retrieve_card_from_table(card)
