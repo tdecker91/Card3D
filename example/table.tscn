@@ -12,9 +12,6 @@ script = ExtResource("4_t7f8m")
 
 [sub_resource type="Resource" id="Resource_w17iw"]
 script = ExtResource("5_rd2gk")
-direction = 0
-arc_angle_deg = 90.0
-arc_radius = 7.0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_gv0to"]
 size = Vector2(40, 20)
@@ -66,4 +63,6 @@ suit = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.111376)
 mesh = SubResource("BoxMesh_g1lkx")
 
+[connection signal="card_clicked" from="Table/DragController/TableCards" to="Table" method="_on_table_cards_card_clicked"]
+[connection signal="card_clicked" from="Table/DragController/Hand" to="Table" method="_on_hand_card_clicked"]
 [connection signal="card_3d_mouse_up" from="Deck" to="Table" method="_on_face_card_3d_card_3d_mouse_up"]

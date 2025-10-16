@@ -40,7 +40,7 @@ func get_card_id(rank: Rank, suit: Suit) -> String:
 
 
 func _generate_all_face_cards() -> Dictionary:
-	var data = {}
+	var all_face_card_data = {}
 
 	for suit in Suit:
 		for rank in Rank:
@@ -53,6 +53,6 @@ func _generate_all_face_cards() -> Dictionary:
 			"back_material_path": back_material
 			}
 			var card_id = get_card_id(Rank[rank], Suit[suit])
-			data[card_id] = card_data
+			all_face_card_data[card_id] = card_data
 
-	return data
+	return all_face_card_data

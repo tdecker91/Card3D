@@ -46,13 +46,13 @@ func _ready():
 	for card in card_deck:
 		deck_collection.append_card(card)
 
-	$DragController/Column1.card_clicked.connect(_on_card_clicked.bind($DragController/Column1))
-	$DragController/Column2.card_clicked.connect(_on_card_clicked.bind($DragController/Column2))
-	$DragController/Column3.card_clicked.connect(_on_card_clicked.bind($DragController/Column3))
-	$DragController/Column4.card_clicked.connect(_on_card_clicked.bind($DragController/Column4))
-	$DragController/Column5.card_clicked.connect(_on_card_clicked.bind($DragController/Column5))
-	$DragController/Column6.card_clicked.connect(_on_card_clicked.bind($DragController/Column6))
-	$DragController/Column7.card_clicked.connect(_on_card_clicked.bind($DragController/Column7))
+	$DragController/Column1.card_deselected.connect(_on_card_deselected.bind($DragController/Column1))
+	$DragController/Column2.card_deselected.connect(_on_card_deselected.bind($DragController/Column2))
+	$DragController/Column3.card_deselected.connect(_on_card_deselected.bind($DragController/Column3))
+	$DragController/Column4.card_deselected.connect(_on_card_deselected.bind($DragController/Column4))
+	$DragController/Column5.card_deselected.connect(_on_card_deselected.bind($DragController/Column5))
+	$DragController/Column6.card_deselected.connect(_on_card_deselected.bind($DragController/Column6))
+	$DragController/Column7.card_deselected.connect(_on_card_deselected.bind($DragController/Column7))
 
 func instantiate_face_card(rank, suit) -> FaceCard3D:
 	var scene = load("res://example/face_card_3d.tscn")
@@ -81,7 +81,7 @@ func _on_deck_card_selected(_card):
 		$EmptyDeck.visible = true
 
 
-func _on_card_clicked(card: FaceCard3D, column: CardCollection3D):
+func _on_card_deselected(card: FaceCard3D, column: CardCollection3D):
 	if column.card_indicies.has(card):
 		var card_index = column.card_indicies[card]
 		if card_index == column.cards.size() - 1 and card.face_down:
