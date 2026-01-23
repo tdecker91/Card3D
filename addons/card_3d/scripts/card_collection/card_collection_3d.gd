@@ -51,6 +51,7 @@ var is_dragging_card: bool = false
 
 var hover_disabled: bool = false # disable card hover animation (useful when dragging other cards around)
 var _hovered_card: Card3D # card currently hovered
+var _pressed_card: Card3D # card that received the last mouse down
 var _preview_drop_index: int = -1
 
 @onready var dropzone_collision: CollisionShape3D = $DropZone/CollisionShape3D
@@ -224,11 +225,14 @@ func _on_card_exit(card: Card3D):
 func _on_card_pressed(card: Card3D):
 	if can_select_card(card):
 		is_dragging_card = false
+		_pressed_card = card
 		card_selected.emit(card)
 
 
 func _on_card_deselected(card: Card3D):
-	if !is_dragging_card:
+	var was_pressed = _pressed_card == card
+	_pressed_card = null
+	if !is_dragging_card and was_pressed:
 		card_clicked.emit(card)
 	is_dragging_card = false
 	card_deselected.emit(card)
