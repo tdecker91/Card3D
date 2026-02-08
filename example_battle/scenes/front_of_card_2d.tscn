@@ -1,9 +1,11 @@
-[gd_scene load_steps=0 format=3 uid="uid://b7y2p2k5cb3vx"]
+[gd_scene format=3 uid="uid://cjunspcvj8d8a"]
 
 [node name="FrontTextureRoot" type="Control"]
-layout_mode = 0
-size = Vector2(500, 700)
 custom_minimum_size = Vector2(500, 700)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 700.0
 
 [node name="FrontTextureBackground" type="TextureRect" parent="."]
 layout_mode = 0
@@ -13,7 +15,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="FrontArtGuide" type="ReferenceRect" parent="."]
-editor_only = true
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -25,7 +26,6 @@ border_color = Color(0.2, 0.8, 0.5, 0.8)
 border_width = 2.0
 
 [node name="FrontTextGuide" type="ReferenceRect" parent="."]
-editor_only = true
 layout_mode = 0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -46,6 +46,9 @@ offset_left = 30.0
 offset_top = 20.0
 offset_right = -30.0
 offset_bottom = -30.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
 theme_override_font_sizes/font_size = 48
 horizontal_alignment = 1
 vertical_alignment = 1

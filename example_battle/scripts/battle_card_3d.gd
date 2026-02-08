@@ -63,7 +63,7 @@ func _apply_overlay() -> void:
 		front_label.modulate = Color(1, 0, 0)
 		front_label.add_theme_font_size_override("font_size", 100)
 	elif damage > 0:
-		front_label.text = "Deal %d damage" % damage
+		front_label.text = "Deal %d\ndamage" % damage
 		front_label.modulate = Color(0, 0, 0)
 		front_label.add_theme_font_size_override("font_size", 60)
 	else:
