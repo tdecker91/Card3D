@@ -21,11 +21,11 @@ extends Card3D
 		if is_inside_tree():
 			_apply_overlay()
 
+var _front_material_override := StandardMaterial3D.new()
 @onready var front_viewport: SubViewport = $FrontTextureViewport
 @onready var front_root: Control = $FrontTextureViewport/FrontTextureRoot
 @onready var front_background: TextureRect = $FrontTextureViewport/FrontTextureRoot/FrontTextureBackground
 @onready var front_label: Label = $FrontTextureViewport/FrontTextureRoot/FrontTextureLabel
-var _front_material_override := StandardMaterial3D.new()
 
 
 func _ready() -> void:
