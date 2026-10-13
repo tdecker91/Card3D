@@ -15,24 +15,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Copy License to Addon Folder
+      - name: Move License to Addon Folder for Packaging
         run: |
-          # Keep LICENSE.txt in the root directory for source control viewing, 
-          # but copy it into the addon folder so it gets bundled correctly 
-          # inside the Godot Asset Library zip package.
+          # Move LICENSE.txt from the root into the addon folder 
+          # so it is located inside the addon package structure for the zip.
           mkdir -p addons/card_3d
-          mv LICENSE addons/card_3d/LICENSE.txt
+          mv LICENSE.txt addons/card_3d/LICENSE.txt
 
       - name: Create Asset Zip Archive
         run: |
-          # Use git archive to export only the files that respect your .gitattributes export-ignore rules,
-          # including the newly copied license.
-          git add addons/card_3d/LICENSE.txt
-          git archive --format=zip --output=card_3d-asset.zip HEAD
-
+          # Create a zip containing only the folders/files you want to export,
+          # explicitly including your addons, examples, and the moved license.
+          zip -r card_3d-asset.zip addons example example_battle example_solitaire -x "*.git*"
+        
       - name: Create GitHub Release and Upload Asset
         uses: softprops/action-gh-release@v2
         with:
           files: card_3d-asset.zip
+          overwrite_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
