@@ -11,6 +11,6 @@ config_version=5
 [application]
 
 config/name="Cards"
-run/main_scene="res://example/table.tscn"
+run/main_scene="res://addons/card_3d/examples/card_table/table.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.png"
