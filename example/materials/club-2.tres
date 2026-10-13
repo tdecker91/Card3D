@@ -1,6 +1,0 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://bv6kmx5fdcpxh"]
-
-[ext_resource type="Texture2D" uid="uid://cjn4hu85dveg5" path="res://example/assets/card_clubs_02.png" id="1_rfjg4"]
-
-[resource]
-albedo_texture = ExtResource("1_rfjg4")
