@@ -17,21 +17,33 @@ jobs:
 
       - name: Move License to Addon Folder for Packaging
         run: |
-          # Move LICENSE.txt from the root into the addon folder 
+          # Move LICENSE from the root into the addon folder 
           # so it is located inside the addon package structure for the zip.
           mkdir -p addons/card_3d
           mv LICENSE addons/card_3d/LICENSE.txt
 
       - name: Create Asset Zip Archive
         run: |
-          # Create a zip containing only the folders/files you want to export,
-          # explicitly including your addons, examples, and the moved license.
-          zip -r card_3d-asset.zip addons example example_battle example_solitaire -x "*.git*"
+          # Extract the version tag (e.g., v1.0.0) from the GitHub Actions environment
+          VERSION=${GITHUB_REF_NAME}
+          
+          # Create a staging directory named after the asset and version (e.g., card_3d-v1.0.0)
+          STAGING_DIR="card_3d-${VERSION}"
+          mkdir -p "${STAGING_DIR}"
+          
+          # Copy your exported folders into the versioned staging directory
+          cp -r addons example example_battle example_solitaire "${STAGING_DIR}/"
+          
+          # Zip up that versioned folder so users get a clean root folder when extracting
+          zip -r "${STAGING_DIR}.zip" "${STAGING_DIR}" -x "*.git*"
+          
+          # Save the final zip filename to an environment variable for the release step
+          echo "ZIP_FILE=${STAGING_DIR}.zip" >> $GITHUB_ENV
         
       - name: Create GitHub Release and Upload Asset
         uses: softprops/action-gh-release@v2
         with:
-          files: card_3d-asset.zip
+          files: ${{ env.ZIP_FILE }}
           overwrite_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
