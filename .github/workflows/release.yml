@@ -18,7 +18,7 @@ jobs:
           # but copy it into the addon folder so it gets bundled correctly 
           # inside the Godot Asset Library zip package.
           mkdir -p addons/card_3d
-          cp LICENSE.txt addons/card_3d/LICENSE.txt
+          mv LICENSE.txt addons/card_3d/LICENSE.txt
 
       - name: Create Asset Zip Archive
         run: |
