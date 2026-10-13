@@ -20,7 +20,7 @@ jobs:
           # Move LICENSE.txt from the root into the addon folder 
           # so it is located inside the addon package structure for the zip.
           mkdir -p addons/card_3d
-          mv LICENSE.txt addons/card_3d/LICENSE.txt
+          mv LICENSE addons/card_3d/LICENSE.txt
 
       - name: Create Asset Zip Archive
         run: |
