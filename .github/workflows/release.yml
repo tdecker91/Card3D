@@ -32,7 +32,7 @@ jobs:
           mkdir -p "${STAGING_DIR}"
           
           # Copy your exported folders into the versioned staging directory
-          cp -r addons example example_battle example_solitaire "${STAGING_DIR}/"
+          cp -r addons "${STAGING_DIR}/"
           
           # Zip up that versioned folder so users get a clean root folder when extracting
           zip -r "${STAGING_DIR}.zip" "${STAGING_DIR}" -x "*.git*"
